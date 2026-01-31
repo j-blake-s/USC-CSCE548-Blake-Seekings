@@ -1,0 +1,62 @@
+package com.commerce.dao;
+
+import com.commerce.model.Customer;
+import com.commerce.util.DatabaseUtil;
+
+import java.sql.*;
+
+public class CustomerDAO {
+    public void create(Customer c) throws SQLException {
+        String sql = "INSERT INTO Customers (first_name, last_name, email, phone, address) VALUES (?,?,?,?,?)";
+        try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, c.getFirstName());
+            ps.setString(2, c.getLastName());
+            ps.setString(3, c.getEmail());
+            ps.setString(4, c.getPhone());
+            ps.setString(5, c.getAddress());
+            ps.executeUpdate();
+        }
+    }
+
+    public Customer read(int id) throws SQLException {
+        String sql = "SELECT * FROM Customers WHERE customer_id = ?";
+        try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return mapCustomer(rs);
+        }
+        return null;
+    }
+
+    public void update(Customer c) throws SQLException {
+        String sql = "UPDATE Customers SET first_name=?, last_name=?, email=?, phone=?, address=? WHERE customer_id=?";
+        try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, c.getFirstName());
+            ps.setString(2, c.getLastName());
+            ps.setString(3, c.getEmail());
+            ps.setString(4, c.getPhone());
+            ps.setString(5, c.getAddress());
+            ps.setInt(6, c.getCustomerId());
+            ps.executeUpdate();
+        }
+    }
+
+    public void delete(int id) throws SQLException {
+        String sql = "DELETE FROM Customers WHERE customer_id = ?";
+        try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        }
+    }
+
+    private Customer mapCustomer(ResultSet rs) throws SQLException {
+        Customer c = new Customer();
+        c.setCustomerId(rs.getInt("customer_id"));
+        c.setFirstName(rs.getString("first_name"));
+        c.setLastName(rs.getString("last_name"));
+        c.setEmail(rs.getString("email"));
+        c.setPhone(rs.getString("phone"));
+        c.setAddress(rs.getString("address"));
+        return c;
+    }
+}
