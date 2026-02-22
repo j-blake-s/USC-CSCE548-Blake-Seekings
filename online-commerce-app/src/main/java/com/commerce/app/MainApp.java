@@ -5,12 +5,15 @@ import com.commerce.service.*;
 
 public class MainApp {
     public static void main(String[] args) {
+
+        int port = Integer.parseInt(System.getenv().getOrDefault("PORT", "7070"));
+
         Javalin app = Javalin.create(config -> {
             // Optional: Adds a logger to see requests in your VS Code terminal
             config.requestLogger.http((ctx, ms) -> {
                 System.out.println(ctx.method() + " " + ctx.path() + " (" + ms + "ms)");
             });
-        }).start(7070);
+        }).start(port);
 
         app.exception(Exception.class, (e, ctx) -> {
             System.out.println("Error: " + e.getMessage());
