@@ -4,7 +4,6 @@ import com.commerce.model.Payment;
 import com.commerce.util.DatabaseUtil;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,11 +43,11 @@ public class PaymentDAO {
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Payment p = new Payment();
-                p.setPaymentId(rs.getInt("paymentId"));
-                p.setOrderId(rs.getInt("orderId"));
-                p.setPaymentDate(rs.getObject("paymentDate", LocalDateTime.class));
+                p.setPaymentId(rs.getInt("payment_id"));
+                p.setOrderId(rs.getInt("order_id"));
+                p.setPaymentDate(rs.getString("payment_date"));
                 p.setAmount(rs.getBigDecimal("amount"));
-                p.setPaymentMethod(rs.getString("paymentMethod"));
+                p.setPaymentMethod(rs.getString("payment_method"));
                 list.add(p);
             }
         }
@@ -99,7 +98,7 @@ public class PaymentDAO {
         p.setOrderId(rs.getInt("order_id"));
         p.setAmount(rs.getBigDecimal("amount"));
         p.setPaymentMethod(rs.getString("payment_method"));
-        p.setPaymentDate(rs.getTimestamp("payment_date").toLocalDateTime());
+        p.setPaymentDate(rs.getString("payment_date"));
         return p;
     }
 }

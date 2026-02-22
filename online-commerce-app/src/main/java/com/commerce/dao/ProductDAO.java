@@ -46,11 +46,11 @@ public class ProductDAO {
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Product p = new Product();
-                p.setProductId(rs.getInt("productId"));
+                p.setProductId(rs.getInt("product_id"));
                 p.setName(rs.getString("name"));
                 p.setDescription(rs.getString("description"));
                 p.setPrice(rs.getBigDecimal("price"));
-                p.setCategoryId(rs.getInt("categoryId"));
+                p.setCategoryId(rs.getInt("category_id"));
                 list.add(p);
             }
         }

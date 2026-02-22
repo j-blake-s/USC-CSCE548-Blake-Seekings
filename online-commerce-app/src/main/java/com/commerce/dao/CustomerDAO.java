@@ -39,9 +39,9 @@ public class CustomerDAO {
            
             while (rs.next()) {
                 Customer c = new Customer();
-                c.setCustomerId(rs.getInt("customerId"));
-                c.setFirstName(rs.getString("firstName"));
-                c.setLastName(rs.getString("lastName"));
+                c.setCustomerId(rs.getInt("customer_id"));
+                c.setFirstName(rs.getString("first_name"));
+                c.setLastName(rs.getString("last_name"));
                 c.setEmail(rs.getString("email"));
                 c.setPhone(rs.getString("phone"));
                 c.setAddress(rs.getString("address"));

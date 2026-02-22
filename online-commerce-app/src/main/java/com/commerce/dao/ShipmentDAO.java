@@ -44,8 +44,8 @@ public class ShipmentDAO {
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Shipment s = new Shipment();
-                s.setShipmentId(rs.getInt("shipmentId"));
-                s.setOrderId(rs.getInt("orderId"));
+                s.setShipmentId(rs.getInt("shipment_id"));
+                s.setOrderId(rs.getInt("order_id"));
                 s.setAddress(rs.getString("address"));
                 s.setStatus(rs.getString("status"));
                 list.add(s);

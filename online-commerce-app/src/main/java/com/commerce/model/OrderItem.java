@@ -10,6 +10,13 @@ public class OrderItem {
     private BigDecimal unitPrice;
 
     public OrderItem() {}
+    public OrderItem(int orderItemId, int orderId, int productId, int quantity, BigDecimal unitPrice) {
+        this.orderItemId = orderItemId;
+        this.orderId = orderId;
+        this.productId = productId;
+        this.quantity = quantity;
+        this.unitPrice = unitPrice;
+    }
 
     public int getOrderItemId() { return orderItemId; }
     public void setOrderItemId(int orderItemId) { this.orderItemId = orderItemId; }

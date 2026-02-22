@@ -7,7 +7,13 @@ public class Shipment {
     private String status;
 
     public Shipment() {}
-
+    public Shipment(int shipmentId, int orderId, String address, String status) {
+        this.shipmentId = shipmentId;
+        this.orderId = orderId;
+        this.address = address;
+        this.status = status;
+    }
+    
     public int getShipmentId() { return shipmentId; }
     public void setShipmentId(int shipmentId) { this.shipmentId = shipmentId; }
     public int getOrderId() { return orderId; }

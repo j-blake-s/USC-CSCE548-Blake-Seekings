@@ -11,6 +11,15 @@ public class Customer {
     // Constructors
     public Customer() {}
 
+    public Customer(int customerId, String firstName, String lastName, String email, String phone, String address) {
+        this.customerId = customerId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+    }
+    
     // Getters and Setters
     public int getCustomerId() { return customerId; }
     public void setCustomerId(int customerId) { this.customerId = customerId; }

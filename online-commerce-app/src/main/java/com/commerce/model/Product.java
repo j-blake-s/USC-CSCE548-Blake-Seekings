@@ -11,6 +11,14 @@ public class Product {
 
     public Product() {}
 
+    public Product(int productId, String name, String description, BigDecimal price, int categoryId) {
+        this.productId = productId;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.categoryId = categoryId;
+    }
+
     public int getProductId() { return productId; }
     public void setProductId(int productId) { this.productId = productId; }
     public String getName() { return name; }

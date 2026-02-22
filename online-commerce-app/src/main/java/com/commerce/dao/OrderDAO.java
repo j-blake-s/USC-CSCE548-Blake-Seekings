@@ -4,7 +4,6 @@ import com.commerce.model.Order;
 import com.commerce.util.DatabaseUtil;
 
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,10 +47,10 @@ public class OrderDAO {
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Order o = new Order();
-                o.setOrderId(rs.getInt("orderId"));
-                o.setCustomerId(rs.getInt("customerId"));
-                o.setOrderDate(rs.getObject("orderDate", LocalDateTime.class));
-                o.setTotalAmount(rs.getBigDecimal("totalAmount"));
+                o.setOrderId(rs.getInt("order_id"));
+                o.setCustomerId(rs.getInt("customer_id"));
+                o.setOrderDate(rs.getString("order_date"));
+                o.setTotalAmount(rs.getBigDecimal("total_amount"));
                 o.setStatus(rs.getString("status"));
                 list.add(o);
             }

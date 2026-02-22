@@ -43,7 +43,7 @@ public class CategoryDAO {
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 Category c = new Category();
-                c.setCategoryId(rs.getInt("categoryId"));
+                c.setCategoryId(rs.getInt("category_id"));
                 c.setName(rs.getString("name"));
                 c.setDescription(rs.getString("description"));
                 list.add(c);

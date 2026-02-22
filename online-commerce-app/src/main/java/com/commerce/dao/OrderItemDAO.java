@@ -21,18 +21,18 @@ public class OrderItemDAO {
 
 
     public List<OrderItem> readAll() throws SQLException {
-        String sql = "SELECT * FROM OrderItems";
+        String sql = "SELECT * FROM Order_Items";
         List<OrderItem> list = new ArrayList<>();
         try (Connection conn = DatabaseUtil.getConnection(); 
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 OrderItem oi = new OrderItem();
-                oi.setOrderItemId(rs.getInt("orderItemId"));
-                oi.setOrderId(rs.getInt("orderId"));
-                oi.setProductId(rs.getInt("productId"));
+                oi.setOrderItemId(rs.getInt("order_item_id"));
+                oi.setOrderId(rs.getInt("order_id"));
+                oi.setProductId(rs.getInt("product_id"));
                 oi.setQuantity(rs.getInt("quantity"));
-                oi.setUnitPrice(rs.getBigDecimal("unitPrice"));
+                oi.setUnitPrice(rs.getBigDecimal("unit_price"));
                 list.add(oi);
             }
         }
