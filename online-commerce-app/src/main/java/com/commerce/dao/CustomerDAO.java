@@ -4,6 +4,8 @@ import com.commerce.model.Customer;
 import com.commerce.util.DatabaseUtil;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CustomerDAO {
     public void create(Customer c) throws SQLException {
@@ -26,6 +28,27 @@ public class CustomerDAO {
             if (rs.next()) return mapCustomer(rs);
         }
         return null;
+    }
+
+    public List<Customer> readAll() throws SQLException {
+        String sql = "SELECT * FROM Customers";
+        List<Customer> list = new ArrayList<>();
+    
+        try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+           
+            while (rs.next()) {
+                Customer c = new Customer();
+                c.setCustomerId(rs.getInt("customerId"));
+                c.setFirstName(rs.getString("firstName"));
+                c.setLastName(rs.getString("lastName"));
+                c.setEmail(rs.getString("email"));
+                c.setPhone(rs.getString("phone"));
+                c.setAddress(rs.getString("address"));
+                list.add(c);
+            }
+        }
+        return list;
     }
 
     public void update(Customer c) throws SQLException {

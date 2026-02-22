@@ -4,6 +4,8 @@ import com.commerce.model.Product;
 import com.commerce.util.DatabaseUtil;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductDAO {
     public void create(Product p) throws SQLException {
@@ -34,6 +36,25 @@ public class ProductDAO {
             }
         }
         return null;
+    }
+
+    public List<Product> readAll() throws SQLException {
+        String sql = "SELECT * FROM Products";
+        List<Product> list = new ArrayList<>();
+        try (Connection conn = DatabaseUtil.getConnection(); 
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Product p = new Product();
+                p.setProductId(rs.getInt("productId"));
+                p.setName(rs.getString("name"));
+                p.setDescription(rs.getString("description"));
+                p.setPrice(rs.getBigDecimal("price"));
+                p.setCategoryId(rs.getInt("categoryId"));
+                list.add(p);
+            }
+        }
+        return list;
     }
 
     public void update(Product p) throws SQLException {

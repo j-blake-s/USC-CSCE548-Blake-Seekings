@@ -19,6 +19,27 @@ public class OrderItemDAO {
         }
     }
 
+
+    public List<OrderItem> readAll() throws SQLException {
+        String sql = "SELECT * FROM OrderItems";
+        List<OrderItem> list = new ArrayList<>();
+        try (Connection conn = DatabaseUtil.getConnection(); 
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                OrderItem oi = new OrderItem();
+                oi.setOrderItemId(rs.getInt("orderItemId"));
+                oi.setOrderId(rs.getInt("orderId"));
+                oi.setProductId(rs.getInt("productId"));
+                oi.setQuantity(rs.getInt("quantity"));
+                oi.setUnitPrice(rs.getBigDecimal("unitPrice"));
+                list.add(oi);
+            }
+        }
+        return list;
+    }
+
+
     // READ (Single item by its unique ID)
     public OrderItem read(int orderItemId) throws SQLException {
         String sql = "SELECT * FROM Order_Items WHERE order_item_id = ?";

@@ -4,6 +4,9 @@ import com.commerce.model.Order;
 import com.commerce.util.DatabaseUtil;
 
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OrderDAO {
     public int create(Order o) throws SQLException {
@@ -35,6 +38,25 @@ public class OrderDAO {
             }
         }
         return null;
+    }
+
+    public List<Order> readAll() throws SQLException {
+        String sql = "SELECT * FROM Orders";
+        List<Order> list = new ArrayList<>();
+        try (Connection conn = DatabaseUtil.getConnection(); 
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Order o = new Order();
+                o.setOrderId(rs.getInt("orderId"));
+                o.setCustomerId(rs.getInt("customerId"));
+                o.setOrderDate(rs.getObject("orderDate", LocalDateTime.class));
+                o.setTotalAmount(rs.getBigDecimal("totalAmount"));
+                o.setStatus(rs.getString("status"));
+                list.add(o);
+            }
+        }
+        return list;
     }
 
     public void update(Order o) throws SQLException {

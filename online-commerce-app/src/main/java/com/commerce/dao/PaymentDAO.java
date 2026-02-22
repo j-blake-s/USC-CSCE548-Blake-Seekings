@@ -4,6 +4,7 @@ import com.commerce.model.Payment;
 import com.commerce.util.DatabaseUtil;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +34,25 @@ public class PaymentDAO {
             }
         }
         return null;
+    }
+
+    public List<Payment> readAll() throws SQLException {
+        String sql = "SELECT * FROM Payments";
+        List<Payment> list = new ArrayList<>();
+        try (Connection conn = DatabaseUtil.getConnection(); 
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Payment p = new Payment();
+                p.setPaymentId(rs.getInt("paymentId"));
+                p.setOrderId(rs.getInt("orderId"));
+                p.setPaymentDate(rs.getObject("paymentDate", LocalDateTime.class));
+                p.setAmount(rs.getBigDecimal("amount"));
+                p.setPaymentMethod(rs.getString("paymentMethod"));
+                list.add(p);
+            }
+        }
+        return list;
     }
 
     // READ (All payments for a specific Order)

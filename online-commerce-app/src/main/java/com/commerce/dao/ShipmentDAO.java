@@ -4,6 +4,8 @@ import com.commerce.model.Shipment;
 import com.commerce.util.DatabaseUtil;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShipmentDAO {
 
@@ -32,6 +34,24 @@ public class ShipmentDAO {
             }
         }
         return null;
+    }
+
+    public List<Shipment> readAll() throws SQLException {
+        String sql = "SELECT * FROM Shipments";
+        List<Shipment> list = new ArrayList<>();
+        try (Connection conn = DatabaseUtil.getConnection(); 
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Shipment s = new Shipment();
+                s.setShipmentId(rs.getInt("shipmentId"));
+                s.setOrderId(rs.getInt("orderId"));
+                s.setAddress(rs.getString("address"));
+                s.setStatus(rs.getString("status"));
+                list.add(s);
+            }
+        }
+        return list;
     }
 
     // READ (By Order ID - Common for Customer Dashboards)
