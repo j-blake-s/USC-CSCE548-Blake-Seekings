@@ -1,0 +1,75 @@
+package com.commerce.app;
+
+import io.javalin.Javalin;
+import com.commerce.service.*;
+
+public class MainApp {
+    public static void main(String[] args) {
+        Javalin app = Javalin.create(config -> {
+            // Optional: Adds a logger to see requests in your VS Code terminal
+            config.requestLogger.http((ctx, ms) -> {
+                System.out.println(ctx.method() + " " + ctx.path() + " (" + ms + "ms)");
+            });
+        }).start(7070);
+
+        app.exception(Exception.class, (e, ctx) -> {
+            System.out.println("Error: " + e.getMessage());
+            ctx.status(500).result("Internal Server Error");
+        });
+        
+        System.out.println("--- E-Commerce API Started ---");
+
+        // --- CUSTOMER ROUTES ---
+        app.get("/customers", CustomerController::getAll);
+        app.get("/customers/{id}", CustomerController::getOne);
+        app.post("/customers", CustomerController::create);
+        app.put("/customers/{id}", CustomerController::update);
+        app.delete("/customers/{id}", CustomerController::deleteOne);
+
+        // --- PRODUCT ROUTES ---
+        app.get("/products", ProductController::getAll);
+        app.get("/products/{id}", ProductController::getOne);
+        app.post("/products", ProductController::create);
+        app.put("/products/{id}", ProductController::update);
+        app.delete("/products/{id}", ProductController::deleteOne);
+
+        // --- CATEGORY ROUTES ---
+        app.get("/categories", CategoryController::getAll);
+        app.get("/categories/{id}", CategoryController::getOne);
+        app.post("/categories", CategoryController::create);
+        app.put("/categories/{id}", CategoryController::update);
+        app.delete("/categories/{id}", CategoryController::deleteOne);
+
+        // --- ORDER ROUTES ---
+        app.get("/orders", OrderController::getAll);
+        app.get("/orders/{id}", OrderController::getOne);
+        app.post("/orders", OrderController::create);
+        app.put("/orders/{id}", OrderController::update);
+        app.delete("/orders/{id}", OrderController::deleteOne);
+
+        // --- ORDER ITEM ROUTES ---
+        app.get("/orderitems", OrderItemController::getAll);
+        app.get("/orderitems/{id}", OrderItemController::getOne);
+        app.post("/orderitems", OrderItemController::create);
+        app.put("/orderitems/{id}", OrderItemController::update);
+        app.delete("/orderitems/{id}", OrderItemController::deleteOne);
+
+        // --- PAYMENT ROUTES ---
+        app.get("/payments", PaymentController::getAll);
+        app.get("/payments/{id}", PaymentController::getOne);
+        app.post("/payments", PaymentController::create);
+        app.put("/payments/{id}", PaymentController::update);
+        app.delete("/payments/{id}", PaymentController::deleteOne);
+
+        // --- SHIPMENT ROUTES ---
+        app.get("/shipments", ShipmentController::getAll);
+        app.get("/shipments/{id}", ShipmentController::getOne);
+        app.post("/shipments", ShipmentController::create);
+        app.put("/shipments/{id}", ShipmentController::update);
+        app.delete("/shipments/{id}", ShipmentController::deleteOne);
+
+        System.out.println("All routes registered. Testing at http://localhost:7070/customers");
+        
+   
+    }
+}

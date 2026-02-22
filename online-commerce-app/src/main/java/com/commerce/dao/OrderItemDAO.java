@@ -8,14 +8,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderItemDAO {
-    public void create(OrderItem item) throws SQLException {
+    public OrderItem create(OrderItem item) throws SQLException {
         String sql = "INSERT INTO Order_Items (order_id, product_id, quantity, unit_price) VALUES (?,?,?,?)";
-        try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, item.getOrderId());
             ps.setInt(2, item.getProductId());
             ps.setInt(3, item.getQuantity());
             ps.setBigDecimal(4, item.getUnitPrice());
             ps.executeUpdate();
+
+            ResultSet keys = ps.getGeneratedKeys();
+            if (keys.next()) {
+                item.setOrderItemId(keys.getInt(1));
+            }
+            
+            return item;
         }
     }
 

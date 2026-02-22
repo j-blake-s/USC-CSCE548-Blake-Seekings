@@ -10,14 +10,21 @@ import java.util.List;
 public class ShipmentDAO {
 
     // CREATE
-    public void create(Shipment s) throws SQLException {
+    public Shipment create(Shipment s) throws SQLException {
         String sql = "INSERT INTO Shipments (order_id, address, status) VALUES (?, ?, ?)";
         try (Connection conn = DatabaseUtil.getConnection(); 
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, s.getOrderId());
             ps.setString(2, s.getAddress());
             ps.setString(3, s.getStatus());
             ps.executeUpdate();
+
+            ResultSet keys = ps.getGeneratedKeys();
+            if (keys.next()) {
+                s.setShipmentId(keys.getInt(1));
+            }
+            
+            return s;
         }
     }
 

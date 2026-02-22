@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDAO {
-    public int create(Order o) throws SQLException {
+    public Order create(Order o) throws SQLException {
         String sql = "INSERT INTO Orders (customer_id, total_amount, status) VALUES (?,?,?)";
         try (Connection conn = DatabaseUtil.getConnection(); 
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -16,8 +16,13 @@ public class OrderDAO {
             ps.setBigDecimal(2, o.getTotalAmount());
             ps.setString(3, o.getStatus());
             ps.executeUpdate();
-            ResultSet rs = ps.getGeneratedKeys();
-            return rs.next() ? rs.getInt(1) : -1;
+            
+            ResultSet keys = ps.getGeneratedKeys();
+            if (keys.next()) {
+                o.setOrderId(keys.getInt(1));
+            }
+            
+            return o;
         }
     }
 

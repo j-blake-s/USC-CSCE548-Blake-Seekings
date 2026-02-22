@@ -20,48 +20,41 @@ public class Testing {
 
         // 1. Category & Product
         Category cat = new Category(0, "Electronics", "Gadgets and gear");
-        bm.saveCategory(cat);
-        int catId = bm.getAllCategories().size();
-        cat.setCategoryId(catId); 
+        cat = bm.saveCategory(cat);
+        int catId = cat.getCategoryId();
         System.out.println("Created Category: " + bm.getCategoryById(catId).getName());
 
         Product prod = new Product(0, "Smartphone", "Latest model", new BigDecimal(999.99), catId);
-        bm.saveProduct(prod);
-        int prodId = bm.getAllProducts().size();
-        prod.setProductId(prodId);
+        prod = bm.saveProduct(prod);
+        int prodId = prod.getProductId();
         System.out.println("Created Product: " + bm.getProductById(prodId).getName());
 
         // 2. Customer
         Customer cust = new Customer(0, "John", "Doe", "john@doe.com", "555-1234", "101 Main St");
-        bm.saveCustomer(cust);
-        int custId = bm.getAllCustomers().size();
-        cust.setCustomerId(custId);
+        cust = bm.saveCustomer(cust);
+        int custId = cust.getCustomerId();
         System.out.println("Created Customer: " + bm.getCustomerById(custId).getFirstName());
 
         // 3. Order & OrderItem
         Order ord = new Order(0, custId, "2023-10-27", new BigDecimal(1050.00), "Pending");
-        bm.saveOrder(ord);
-        int ordId = bm.getAllOrders().size();
-        ord.setOrderId(ordId);
+        ord = bm.saveOrder(ord);
+        int ordId = ord.getOrderId();
         System.out.println("Created Order ID: " + bm.getOrderById(ordId).getOrderId());
 
         OrderItem item = new OrderItem(0, ordId, prodId, 1, new BigDecimal(999.99));
-        bm.saveOrderItem(item);
-        int itemId = bm.getAllOrderItems().size();
-        item.setOrderItemId(itemId);
+        item = bm.saveOrderItem(item);
+        int itemId = item.getOrderItemId();
         System.out.println("Created OrderItem for Product ID: " + bm.getOrderItemById(itemId).getProductId());
 
         // 4. Payment & Shipment
         Payment pay = new Payment(0, ordId, "2023-10-27", new BigDecimal(1050.00), "Credit Card");
-        bm.savePayment(pay);
-        int payId = bm.getAllPayments().size();
-        pay.setPaymentId(payId);
+        pay = bm.savePayment(pay);
+        int payId = pay.getPaymentId();
         System.out.println("Created Payment for Amount: $" + bm.getPaymentById(payId).getAmount());
 
         Shipment ship = new Shipment(0, ordId, "101 Main St", "Processing");
-        bm.saveShipment(ship);
-        int shipId = bm.getAllShipments().size();
-        ship.setShipmentId(shipId);
+        ship = bm.saveShipment(ship);
+        int shipId = ship.getShipmentId();
         System.out.println("Created Shipment Status: " + bm.getShipmentById(shipId).getStatus());
 
         // --- UPDATE TEST ---
@@ -161,7 +154,8 @@ public class Testing {
             order.setCustomerId(1); 
             order.setTotalAmount(new BigDecimal("59.99"));
             order.setStatus("Pending");
-            int generatedOrderId = dp.order.create(order);
+            order = dp.order.create(order);
+            int generatedOrderId = order.getOrderId();
             System.out.println("[PASS] Order Created, ID: ");
 
             OrderItem item = new OrderItem();

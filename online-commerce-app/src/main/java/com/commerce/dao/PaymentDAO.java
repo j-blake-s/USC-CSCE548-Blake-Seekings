@@ -9,14 +9,20 @@ import java.util.List;
 
 public class PaymentDAO {
     // CREATE
-    public void create(Payment p) throws SQLException {
+    public Payment create(Payment p) throws SQLException {
         String sql = "INSERT INTO Payments (order_id, amount, payment_method) VALUES (?, ?, ?)";
         try (Connection conn = DatabaseUtil.getConnection(); 
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, p.getOrderId());
             ps.setBigDecimal(2, p.getAmount());
             ps.setString(3, p.getPaymentMethod());
             ps.executeUpdate();
+            ResultSet keys = ps.getGeneratedKeys();
+            if (keys.next()) {
+                p.setPaymentId(keys.getInt(1));
+            }
+            
+            return p;
         }
     }
 

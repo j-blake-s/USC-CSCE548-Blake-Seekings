@@ -9,12 +9,20 @@ import java.util.List;
 
 public class CategoryDAO {
 
-    public void create(Category c) throws SQLException {
+    public Category create(Category c) throws SQLException {
         String sql = "INSERT INTO Categories (name, description) VALUES (?,?)";
-        try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseUtil.getConnection(); 
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, c.getName());
             ps.setString(2, c.getDescription());
             ps.executeUpdate();
+
+            ResultSet keys = ps.getGeneratedKeys();
+            if (keys.next()) {
+                c.setCategoryId(keys.getInt(1));
+            }
+
+            return c;
         }
     }
 

@@ -8,15 +8,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerDAO {
-    public void create(Customer c) throws SQLException {
+    public Customer create(Customer c) throws SQLException {
         String sql = "INSERT INTO Customers (first_name, last_name, email, phone, address) VALUES (?,?,?,?,?)";
-        try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, c.getFirstName());
             ps.setString(2, c.getLastName());
             ps.setString(3, c.getEmail());
             ps.setString(4, c.getPhone());
             ps.setString(5, c.getAddress());
             ps.executeUpdate();
+
+            ResultSet keys = ps.getGeneratedKeys();
+            if (keys.next()) {
+                c.setCustomerId(keys.getInt(1));
+            }
+
+            return c;
         }
     }
 
