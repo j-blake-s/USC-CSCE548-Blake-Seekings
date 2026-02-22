@@ -23,7 +23,7 @@ CREATE TABLE Products (
     description TEXT,
     price DECIMAL(10, 2) NOT NULL,
     category_id INT,
-    FOREIGN KEY (category_id) REFERENCES Categories(category_id) ON DELETE SET NULL
+    FOREIGN KEY (category_id) REFERENCES Categories(category_id)
 );
 
 CREATE TABLE Orders (
@@ -42,7 +42,7 @@ CREATE TABLE Order_Items (
     quantity INT NOT NULL,
     unit_price DECIMAL(10, 2) NOT NULL,
     FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE CASCADE,
-    FOREIGN KEY (product_id) REFERENCES Products(product_id) ON DELETE CASCADE
+    FOREIGN KEY (product_id) REFERENCES Products(product_id) ON DELETE SET NULL
 );
 
 CREATE TABLE Payments (
