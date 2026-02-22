@@ -1,6 +1,8 @@
 package com.commerce.model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Order {
     private int orderId;
@@ -8,7 +10,8 @@ public class Order {
     private String orderDate;
     private BigDecimal totalAmount;
     private String status;
-
+    private List<OrderItem> items = new ArrayList<>();
+    
     public Order() {}
 
     public Order(int orderId, int customerId, String orderDate, BigDecimal totalAmount, String status) {
@@ -18,6 +21,10 @@ public class Order {
         this.totalAmount = totalAmount;
         this.status = status;
     }
+    
+    public List<OrderItem> getItems() { return items; }
+    public void setItems(List<OrderItem> items) { this.items = items; }
+
     public int getOrderId() { return orderId; }
     public void setOrderId(int orderId) { this.orderId = orderId; }
     public int getCustomerId() { return customerId; }

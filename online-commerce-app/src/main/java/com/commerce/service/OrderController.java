@@ -17,9 +17,13 @@ public class OrderController {
 
     public static void getOne(Context ctx) throws SQLException {
         int id = Integer.parseInt(ctx.pathParam("id"));
-        Order o = bm.getOrderById(id);
-        if (o != null) ctx.json(o);
-        else ctx.status(404).result("Order not found");
+        Order o = bm.getOrderWithItems(id); // Use the new method
+        
+        if (o != null) {
+            ctx.json(o);
+        } else {
+            ctx.status(404).result("Order not found");
+        }
     }
 
     public static void create(Context ctx) throws SQLException {

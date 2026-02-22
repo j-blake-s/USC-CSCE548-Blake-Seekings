@@ -51,6 +51,7 @@ public class BusinessManager {
         return obj;
     }
     public void deleteOrder(int id) throws SQLException{ db.order.delete(id); }
+    public Order getOrderWithItems(int id)  throws SQLException { return db.order.readWithItems(id); }
     public Order getOrderById(int id) throws SQLException { return db.order.read(id); }
     public List<Order> getAllOrders() throws SQLException { return db.order.readAll(); }
 

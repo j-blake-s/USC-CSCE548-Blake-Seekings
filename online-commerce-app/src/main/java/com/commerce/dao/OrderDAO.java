@@ -1,6 +1,7 @@
 package com.commerce.dao;
 
 import com.commerce.model.Order;
+import com.commerce.model.OrderItem;
 import com.commerce.util.DatabaseUtil;
 
 import java.sql.*;
@@ -79,5 +80,33 @@ public class OrderDAO {
             ps.setInt(1, id);
             ps.executeUpdate();
         }
+    }
+
+    public Order readWithItems(int id) throws SQLException {
+        Order order = read(id); // Your existing method
+        
+        if (order != null) {
+            String sql = "SELECT * FROM order_items WHERE order_id = ?";
+            try (Connection conn = DatabaseUtil.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                
+                pstmt.setInt(1, id);
+                ResultSet rs = pstmt.executeQuery();
+                
+                while (rs.next()) {
+                    OrderItem item = new OrderItem(
+                        rs.getInt("order_item_id"),
+                        rs.getInt("order_id"),
+                        rs.getInt("product_id"),
+                        rs.getInt("quantity"),
+                        rs.getBigDecimal("unit_price")
+                    );
+                    order.getItems().add(item);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return order;
     }
 }
