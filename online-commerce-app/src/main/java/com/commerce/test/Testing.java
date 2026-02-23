@@ -9,8 +9,13 @@ import java.sql.SQLException;
 public class Testing {
 
     public static void main(String[] args) throws SQLException {
-    //    DatabaseHarness();
-        BusinessHarness();
+        // DatabaseHarness();
+        // BusinessHarness();
+        try {
+            ServiceTestHarness.test();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void BusinessHarness() throws SQLException {
