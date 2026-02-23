@@ -28,8 +28,8 @@ public class OrderController {
 
     public static void create(Context ctx) throws SQLException {
         Order o = ctx.bodyAsClass(Order.class);
-        bm.saveOrder(o);
-        ctx.status(201).result("Order Created");
+        o = bm.saveOrder(o);
+        ctx.status(201).result("Order Created").json(o.getOrderId());
     }
 
     public static void update(Context ctx) throws SQLException {

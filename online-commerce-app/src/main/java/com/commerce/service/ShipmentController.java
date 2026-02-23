@@ -24,8 +24,8 @@ public class ShipmentController {
 
     public static void create(Context ctx) throws SQLException {
         Shipment s = ctx.bodyAsClass(Shipment.class);
-        bm.saveShipment(s);
-        ctx.status(201).result("Shipment Created");
+        s = bm.saveShipment(s);
+        ctx.status(201).result("Shipment Created").json(s.getShipmentId());
     }
 
     public static void update(Context ctx) throws SQLException {

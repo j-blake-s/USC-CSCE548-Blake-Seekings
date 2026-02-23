@@ -29,8 +29,8 @@ public class CustomerController {
 
     public static void create(Context ctx) throws SQLException {
         Customer c = ctx.bodyAsClass(Customer.class); // Turns JSON body into Object
-        bm.saveCustomer(c);
-        ctx.status(201).result("Customer Created");
+        c = bm.saveCustomer(c);
+        ctx.status(201).result("Customer Created").json(c.getCustomerId());
     }
 
     public static void update(Context ctx) throws SQLException {

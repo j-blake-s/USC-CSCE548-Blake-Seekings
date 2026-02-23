@@ -17,8 +17,10 @@ public class TestClient {
         
 
         Category c = new Category(0, "Medical", "Health Stuff");
-        POST(c, "categories");
-        // DELETE("categories",catId);
+        // int catId = POST(c, "categories");
+
+
+        DELETE("categories",16);
 
     }
 
@@ -68,7 +70,7 @@ public class TestClient {
         System.out.println("Status Code: " + response.statusCode());
     }
 
-    private static JsonNode POST(Object obj, String table) throws Exception {
+    private static int POST(Object obj, String table) throws Exception {
         String json = toJson(obj);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE_URL + "/" + table))
@@ -77,10 +79,6 @@ public class TestClient {
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println(response.statusCode());
-        ObjectMapper mapper = new ObjectMapper();
-        System.out.println(response);
-        // JsonNode rootNode = mapper.readTree(response.body());
-        // return rootNode;
-        return null;
+        return Integer.parseInt(response.body());
     }
 }

@@ -24,8 +24,8 @@ public class PaymentController {
 
     public static void create(Context ctx) throws SQLException {
         Payment p = ctx.bodyAsClass(Payment.class);
-        bm.savePayment(p);
-        ctx.status(201).result("Payment Processed");
+        p = bm.savePayment(p);
+        ctx.status(201).result("Payment Processed").json(p.getPaymentId());
     }
 
     public static void update(Context ctx) throws SQLException {

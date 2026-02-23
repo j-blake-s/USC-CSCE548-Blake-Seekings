@@ -23,8 +23,8 @@ public class ProductController {
 
     public static void create(Context ctx) throws SQLException  {
         Product p = ctx.bodyAsClass(Product.class);
-        bm.saveProduct(p);
-        ctx.status(201).result("Product Created");
+        p = bm.saveProduct(p);
+        ctx.status(201).result("Product Created").json(p.getProductId());
     }
     
     public static void update(Context ctx) throws SQLException {

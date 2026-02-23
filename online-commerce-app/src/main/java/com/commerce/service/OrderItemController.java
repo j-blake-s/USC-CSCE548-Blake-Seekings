@@ -24,8 +24,8 @@ public class OrderItemController {
 
     public static void create(Context ctx) throws SQLException  {
         OrderItem oi = ctx.bodyAsClass(OrderItem.class);
-        bm.saveOrderItem(oi);
-        ctx.status(201).result("Order Item Added");
+        oi = bm.saveOrderItem(oi);
+        ctx.status(201).result("Order Item Added").json(oi.getOrderItemId());
     }
 
     public static void update(Context ctx) throws SQLException {
