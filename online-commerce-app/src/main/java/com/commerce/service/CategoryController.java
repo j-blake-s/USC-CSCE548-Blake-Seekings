@@ -24,8 +24,8 @@ public class CategoryController {
 
     public static void create(Context ctx) throws SQLException {
         Category cat = ctx.bodyAsClass(Category.class);
-        bm.saveCategory(cat);
-        ctx.status(201).result("Category Created");
+        cat = bm.saveCategory(cat);
+        ctx.status(201).result("Category Created").json(cat.getCategoryId());;
     }
 
     public static void update(Context ctx) throws SQLException {

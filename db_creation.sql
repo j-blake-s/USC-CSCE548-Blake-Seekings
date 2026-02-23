@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS online_commerce;
-USE online_commerce;
+CREATE DATABASE IF NOT EXISTS railway;
+USE railway;
 
 -- Tables are created in order of dependency
 CREATE TABLE Customers (

@@ -1,4 +1,4 @@
-use online_commerce;
+use railway;
 
 -- Categories (4)
 INSERT INTO Categories (name, description) VALUES 

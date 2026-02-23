@@ -1,5 +1,7 @@
 package com.commerce.model;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class Customer {
     private int customerId;
     private String firstName;
@@ -19,7 +21,9 @@ public class Customer {
         this.phone = phone;
         this.address = address;
     }
-    
+
+
+
     // Getters and Setters
     public int getCustomerId() { return customerId; }
     public void setCustomerId(int customerId) { this.customerId = customerId; }
