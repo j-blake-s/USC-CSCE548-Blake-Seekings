@@ -3,6 +3,21 @@ package com.commerce.app;
 import io.javalin.Javalin;
 import com.commerce.service.*;
 
+/**
+ * HOSTING DETAILS:
+ * Platform: Railway (https://railway.app)
+ * * HOW TO HOST:
+ * 1. Database: Provisioned a MySQL instance on Railway. Used the 'Variables' 
+ * tab to extract the public TCP proxy credentials for schema management.
+ * 2. Schema: Connected via MySQL Workbench to create tables using DDL scripts.
+ * 3. Application: Linked this Java project to a Railway 'Service'.
+ * 4. Environment: Configured the following variables in Railway to allow 
+ * the JAR to connect to the database:
+ * - DATABASE_URL (Internal/Public connection string)
+ * - PORT (Assigned by Railway's dynamic port mapping)
+ * 5. Deployment: Set up a CI/CD pipeline where Railway automatically 
+ * rebuilds and deploys the app whenever code is pushed to the GitHub repository.
+ */
 public class MainApp {
     public static void main(String[] args) {
 
