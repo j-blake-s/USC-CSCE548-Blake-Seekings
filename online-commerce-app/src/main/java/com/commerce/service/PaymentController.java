@@ -25,6 +25,7 @@ public class PaymentController {
     public static void create(Context ctx) throws SQLException {
         Payment p = ctx.bodyAsClass(Payment.class);
         p = bm.savePayment(p);
+        ctx.header("HX-Refresh", "true"); // Trigger the reload
         ctx.status(201).result("Payment Processed").json(p.getPaymentId());
     }
 

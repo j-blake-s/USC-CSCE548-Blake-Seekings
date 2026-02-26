@@ -1,0 +1,17 @@
+<h2 class="text-2xl font-bold mb-4">Add Customer</h2>
+<form hx-post="/customers" hx-ext="json-enc">
+    <div class="space-y-4">
+        <input type="text" name="firstName" placeholder="First Name" class="w-full border p-2 rounded" required>
+        <input type="text" name="lastName" placeholder="Last Name" class="w-full border p-2 rounded" required>
+        <input type="email" name="email" placeholder="Email" class="w-full border p-2 rounded" required>
+        <input type="text" name="phone" placeholder="Phone" class="w-full border p-2 rounded">
+        <textarea name="address" placeholder="Address" class="w-full border p-2 rounded"></textarea>
+
+    </div>
+    <div class="pt-4 flex gap-3">
+        <button type="button" @click="open = false" 
+                class="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">Cancel</button>
+        <button type="submit" 
+                class="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700 transition">Save Customer</button>
+    </div>
+</form>

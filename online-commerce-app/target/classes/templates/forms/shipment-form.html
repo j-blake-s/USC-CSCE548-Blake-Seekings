@@ -1,0 +1,32 @@
+<h2 class="text-2xl font-bold mb-4 text-gray-800">Create Shipment</h2>
+<p class="text-sm text-gray-500 mb-6">Define the destination and current status of a package.</p>
+
+<form hx-post="/shipments" hx-ext="json-enc" class="space-y-4">
+    <div>
+        <label class="block text-sm font-medium text-gray-700">Order ID</label>
+        <input type="number" name="orderId" placeholder="5001" 
+               class="mt-1 w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" required>
+    </div>
+
+    <div>
+        <label class="block text-sm font-medium text-gray-700">Shipping Address</label>
+        <textarea name="address" placeholder="123 Railway Lane, Cloud City" 
+                  class="mt-1 w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" rows="2" required></textarea>
+    </div>
+
+    <div>
+        <label class="block text-sm font-medium text-gray-700">Shipment Status</label>
+        <select name="status" class="mt-1 w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-green-500 outline-none bg-white">
+            <option value="Processing">Processing</option>
+            <option value="In Transit">In Transit</option>
+            <option value="Delivered">Delivered</option>
+        </select>
+    </div>
+
+    <div class="pt-4 flex gap-3">
+        <button type="button" @click="open = false" 
+                class="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">Cancel</button>
+        <button type="submit" 
+                class="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700 transition">Save Shipment</button>
+    </div>
+</form>

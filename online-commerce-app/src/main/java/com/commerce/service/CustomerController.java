@@ -30,6 +30,7 @@ public class CustomerController {
     public static void create(Context ctx) throws SQLException {
         Customer c = ctx.bodyAsClass(Customer.class); // Turns JSON body into Object
         c = bm.saveCustomer(c);
+        ctx.header("HX-Refresh", "true"); // Trigger the reload
         ctx.status(201).result("Customer Created").json(c.getCustomerId());
     }
 

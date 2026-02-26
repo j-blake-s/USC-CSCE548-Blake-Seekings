@@ -6,6 +6,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
 </head>
 <body class="bg-gray-100 font-sans" 
       x-data="{ currentTab: location.hash ? location.hash.substring(1) : 'customers' }"
@@ -32,9 +33,15 @@
 
         <main class="flex-1 overflow-y-auto p-10">
             
-            <section x-show="currentTab === 'customers'">
+            <section x-show="currentTab === 'customers'" x-cloak>
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-3xl font-bold text-gray-800">Customers</h1>
+                    <button hx-get="/forms/customer" 
+                            hx-target="#modal-content" 
+                            @click="$dispatch('open-modal')"
+                            class="bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-indigo-700 transition">
+                        + Add Customer
+                    </button>
                     <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold" 
                           th:text="${customers.size() + ' Total'}"></span>
                 </div>
@@ -72,9 +79,15 @@
                 </div>
             </section>
 
-            <section x-show="currentTab === 'products'">
+            <section x-show="currentTab === 'products'" x-cloak>
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-3xl font-bold text-gray-800 mb-6">Products</h1>
+                    <button hx-get="/forms/product" 
+                            hx-target="#modal-content" 
+                            @click="$dispatch('open-modal')"
+                            class="bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-indigo-700 transition">
+                        + Add Product
+                    </button>
                     <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold" 
                           th:text="${products.size() + ' Total'}"></span>
                 </div>
@@ -114,6 +127,12 @@
             <section x-show="currentTab === 'categories'" x-cloak>
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-3xl font-bold text-gray-800 mb-6">Categories</h1>
+                    <button hx-get="/forms/category" 
+                            hx-target="#modal-content" 
+                            @click="$dispatch('open-modal')"
+                            class="bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-indigo-700 transition">
+                        + Add Category
+                    </button>
                     <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold" 
                           th:text="${categories.size() + ' Total'}"></span>
                 </div>
@@ -149,6 +168,12 @@
             <section x-show="currentTab === 'orders'" x-cloak>
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-3xl font-bold text-gray-800 mb-6">Orders</h1>
+                    <button hx-get="/forms/order" 
+                            hx-target="#modal-content" 
+                            @click="$dispatch('open-modal')"
+                            class="bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-indigo-700 transition">
+                        + Add Order
+                    </button>
                     <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold" 
                           th:text="${orders.size() + ' Total'}"></span>
                 </div>
@@ -192,6 +217,12 @@
             <section x-show="currentTab === 'orderItems'" x-cloak>
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-3xl font-bold text-gray-800 mb-6">Order Items</h1>
+                    <button hx-get="/forms/orderitem" 
+                            hx-target="#modal-content" 
+                            @click="$dispatch('open-modal')"
+                            class="bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-indigo-700 transition">
+                        + Add Order Item
+                    </button>
                     <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold" 
                           th:text="${orderItems.size() + ' Total'}"></span>
                 </div>
@@ -231,6 +262,12 @@
             <section x-show="currentTab === 'payments'" x-cloak>
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-3xl font-bold text-gray-800 mb-6">Payments</h1>
+                    <button hx-get="/forms/payment" 
+                            hx-target="#modal-content" 
+                            @click="$dispatch('open-modal')"
+                            class="bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-indigo-700 transition">
+                        + Add Payment
+                    </button>
                     <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold" 
                           th:text="${payments.size() + ' Total'}"></span>
                 </div>
@@ -270,6 +307,12 @@
             <section x-show="currentTab === 'shipments'" x-cloak>
                 <div class="flex justify-between items-center mb-6">
                     <h1 class="text-3xl font-bold text-gray-800 mb-6">Shipments</h1>
+                    <button hx-get="/forms/shipment" 
+                            hx-target="#modal-content" 
+                            @click="$dispatch('open-modal')"
+                            class="bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-indigo-700 transition">
+                        + Add Shipment
+                    </button>
                     <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold" 
                           th:text="${shipments.size() + ' Total'}"></span>
                 </div>
@@ -307,5 +350,16 @@
         </main>
     </div>
 
+    <div x-data="{ open: false }" 
+        @open-modal.window="open = true" 
+        @close-modal.window="open = false"
+        x-show="open" 
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" x-cloak>
+        
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg p-8 relative">
+            <button @click="open = false" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">&times;</button>
+            <div id="modal-content"></div>
+        </div>
+    </div>
 </body>
 </html>

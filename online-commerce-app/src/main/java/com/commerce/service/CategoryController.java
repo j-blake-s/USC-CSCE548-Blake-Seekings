@@ -25,6 +25,7 @@ public class CategoryController {
     public static void create(Context ctx) throws SQLException {
         Category cat = ctx.bodyAsClass(Category.class);
         cat = bm.saveCategory(cat);
+        ctx.header("HX-Refresh", "true"); // Trigger the reload
         ctx.status(201).result("Category Created").json(cat.getCategoryId());;
     }
 

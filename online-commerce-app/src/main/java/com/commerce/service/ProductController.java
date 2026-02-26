@@ -24,6 +24,7 @@ public class ProductController {
     public static void create(Context ctx) throws SQLException  {
         Product p = ctx.bodyAsClass(Product.class);
         p = bm.saveProduct(p);
+        ctx.header("HX-Refresh", "true"); // Trigger the reload
         ctx.status(201).result("Product Created").json(p.getProductId());
     }
     

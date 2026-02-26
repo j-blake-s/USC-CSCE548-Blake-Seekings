@@ -53,6 +53,16 @@ public class MainApp {
         
         System.out.println("--- E-Commerce API Started ---");
 
+        // Inside your main method
+        // These routes return the blank forms for the modal
+        app.get("/forms/customer", ctx -> ctx.render("templates/forms/customer-form.html"));
+        app.get("/forms/product", ctx -> ctx.render("templates/forms/product-form.html"));
+        app.get("/forms/category", ctx -> ctx.render("templates/forms/category-form.html"));
+        app.get("/forms/order", ctx -> ctx.render("templates/forms/order-form.html"));
+        app.get("/forms/orderitem", ctx -> ctx.render("templates/forms/orderitem-form.html"));
+        app.get("/forms/payment", ctx -> ctx.render("templates/forms/payment-form.html"));
+        app.get("/forms/shipment", ctx -> ctx.render("templates/forms/shipment-form.html"));
+        
         // 2. The Dashboard Route
         app.get("/dashboard", ctx -> {
             try {

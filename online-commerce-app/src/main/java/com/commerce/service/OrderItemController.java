@@ -25,6 +25,7 @@ public class OrderItemController {
     public static void create(Context ctx) throws SQLException  {
         OrderItem oi = ctx.bodyAsClass(OrderItem.class);
         oi = bm.saveOrderItem(oi);
+        ctx.header("HX-Refresh", "true"); // Trigger the reload
         ctx.status(201).result("Order Item Added").json(oi.getOrderItemId());
     }
 

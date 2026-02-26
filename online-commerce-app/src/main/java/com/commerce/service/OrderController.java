@@ -29,6 +29,7 @@ public class OrderController {
     public static void create(Context ctx) throws SQLException {
         Order o = ctx.bodyAsClass(Order.class);
         o = bm.saveOrder(o);
+        ctx.header("HX-Refresh", "true"); // Trigger the reload
         ctx.status(201).result("Order Created").json(o.getOrderId());
     }
 

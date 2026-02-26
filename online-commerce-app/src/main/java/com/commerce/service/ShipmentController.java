@@ -25,6 +25,7 @@ public class ShipmentController {
     public static void create(Context ctx) throws SQLException {
         Shipment s = ctx.bodyAsClass(Shipment.class);
         s = bm.saveShipment(s);
+        ctx.header("HX-Refresh", "true"); // Trigger the reload
         ctx.status(201).result("Shipment Created").json(s.getShipmentId());
     }
 
