@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>E-Commerce Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body class="bg-gray-100 font-sans" x-data="{ currentTab: 'customers' }">
+
+    <div class="flex h-screen">
+        <aside class="w-64 bg-slate-900 text-white flex flex-col">
+            <div class="p-6 text-2xl font-bold border-b border-slate-800">
+                Admin Panel
+            </div>
+            <nav class="flex-1 p-4 space-y-2">
+                <button @click="currentTab = 'categories'" :class="currentTab === 'categories' ? 'bg-blue-600' : 'hover:bg-slate-800'" class="w-full text-left p-3 rounded-lg transition">Categories</button>
+                <button @click="currentTab = 'orderItems'" :class="currentTab === 'orderItems' ? 'bg-blue-600' : 'hover:bg-slate-800'" class="w-full text-left p-3 rounded-lg transition">Order Items</button>
+                <button @click="currentTab = 'payments'" :class="currentTab === 'payments' ? 'bg-blue-600' : 'hover:bg-slate-800'" class="w-full text-left p-3 rounded-lg transition">Payments</button>
+                <button @click="currentTab = 'shipments'" :class="currentTab === 'shipments' ? 'bg-blue-600' : 'hover:bg-slate-800'" class="w-full text-left p-3 rounded-lg transition">Shipments</button>
+                <button @click="currentTab = 'customers'" :class="currentTab === 'customers' ? 'bg-blue-600' : 'hover:bg-slate-800'"class="w-full text-left p-3 rounded-lg transition">Customers</button>
+                <button @click="currentTab = 'products'" :class="currentTab === 'products' ? 'bg-blue-600' : 'hover:bg-slate-800'"class="w-full text-left p-3 rounded-lg transition">Products</button>
+                <button @click="currentTab = 'orders'" :class="currentTab === 'orders' ? 'bg-blue-600' : 'hover:bg-slate-800'"class="w-full text-left p-3 rounded-lg transition">Orders</button>
+            </nav>
+            <div class="p-4 border-t border-slate-800 text-xs text-slate-400">
+                Connected to Railway Production
+            </div>
+        </aside>
+
+        <main class="flex-1 overflow-y-auto p-10">
+            
+            <section x-show="currentTab === 'customers'">
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-3xl font-bold text-gray-800">Customers</h1>
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold" 
+                          th:text="${customers.size() + ' Total'}"></span>
+                </div>
+                
+                <div class="bg-white shadow-sm rounded-xl border border-gray-200 overflow-hidden">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-gray-50 border-b border-gray-200">
+                            <tr>
+                                <th class="p-4 font-semibold text-gray-600">ID</th>
+                                <th class="p-4 font-semibold text-gray-600">Full Name</th>
+                                <th class="p-4 font-semibold text-gray-600">Email</th>
+                                <th class="p-4 font-semibold text-gray-600">Phone</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <tr th:each="c : ${customers}" class="hover:bg-gray-50 transition">
+                                <td class="p-4 text-sm font-mono text-gray-500" th:text="${c.customerId}"></td>
+                                <td class="p-4 font-medium text-gray-900" th:text="${c.firstName + ' ' + c.lastName}"></td>
+                                <td class="p-4 text-blue-600" th:text="${c.email}"></td>
+                                <td class="p-4 text-gray-600" th:text="${c.phone}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section x-show="currentTab === 'products'">
+                <h1 class="text-3xl font-bold text-gray-800 mb-6">Products</h1>
+                <div class="bg-white shadow-sm rounded-xl border border-gray-200 overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 border-b">
+                            <tr>
+                                <th class="p-4">Name</th>
+                                <th class="p-4">Description</th>
+                                <th class="p-4 text-right">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="p : ${products}" class="border-b hover:bg-gray-50 transition">
+                                <td class="p-4 font-semibold text-gray-900" th:text="${p.name}"></td>
+                                <td class="p-4 text-gray-600 text-sm" th:text="${p.description}"></td>
+                                <td class="p-4 text-right font-mono text-green-600" th:text="${'$' + p.price}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section x-show="currentTab === 'categories'" x-cloak>
+                <h1 class="text-3xl font-bold text-gray-800 mb-6">Categories</h1>
+                <div class="bg-white shadow-sm rounded-xl border border-gray-200 overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 border-b">
+                            <tr>
+                                <th class="p-4">ID</th>
+                                <th class="p-4">Name</th>
+                                <th class="p-4">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <tr th:each="cat : ${categories}" class="hover:bg-gray-50">
+                                <td class="p-4 font-mono text-sm text-gray-500" th:text="${cat.categoryId}"></td>
+                                <td class="p-4 font-semibold" th:text="${cat.name}"></td>
+                                <td class="p-4 text-gray-600" th:text="${cat.description}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section x-show="currentTab === 'orders'" x-cloak>
+                <h1 class="text-3xl font-bold text-gray-800 mb-6">Orders</h1>
+                <div class="bg-white shadow-sm rounded-xl border border-gray-200 overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 border-b">
+                            <tr>
+                                <th class="p-4">Order ID</th>
+                                <th class="p-4">Customer ID</th>
+                                <th class="p-4">Date</th>
+                                <th class="p-4">Amount</th>
+                                <th class="p-4">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="o : ${orders}" class="border-b hover:bg-gray-50">
+                                <td class="p-4 font-mono" th:text="${o.orderId}"></td>
+                                <td class="p-4" th:text="${o.customerId}"></td>
+                                <td class="p-4" th:text="${o.orderDate}"></td>
+                                <td class="p-4 font-bold text-green-700" th:text="${'$' + o.totalAmount}"></td>
+                                <td class="p-4">
+                                    <span class="px-2 py-1 rounded-full text-xs font-bold uppercase"
+                                        th:classappend="${o.status == 'Shipped' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}"
+                                        th:text="${o.status}"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section x-show="currentTab === 'orderItems'" x-cloak>
+                <h1 class="text-3xl font-bold text-gray-800 mb-6">Order Line Items</h1>
+                <div class="bg-white shadow-sm rounded-xl border border-gray-200 overflow-hidden">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-gray-50 border-b">
+                            <tr>
+                                <th class="p-4">Item ID</th>
+                                <th class="p-4">Order ID</th>
+                                <th class="p-4">Product ID</th>
+                                <th class="p-4">Qty</th>
+                                <th class="p-4">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="item : ${orderItems}" class="border-b">
+                                <td class="p-4 font-mono" th:text="${item.orderItemId}"></td>
+                                <td class="p-4" th:text="${item.orderId}"></td>
+                                <td class="p-4" th:text="${item.productId}"></td>
+                                <td class="p-4" th:text="${item.quantity}"></td>
+                                <td class="p-4" th:text="${'$' + item.unitPrice}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section x-show="currentTab === 'payments'" x-cloak>
+                <h1 class="text-3xl font-bold text-gray-800 mb-6">Payments</h1>
+                <div class="bg-white shadow-sm rounded-xl border border-gray-200 overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 border-b">
+                            <tr>
+                                <th class="p-4">Payment ID</th>
+                                <th class="p-4">Order ID</th>
+                                <th class="p-4">Method</th>
+                                <th class="p-4">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="pay : ${payments}" class="border-b">
+                                <td class="p-4 font-mono" th:text="${pay.paymentId}"></td>
+                                <td class="p-4" th:text="${pay.orderId}"></td>
+                                <td class="p-4 text-gray-600" th:text="${pay.paymentMethod}"></td>
+                                <td class="p-4 font-bold text-indigo-700" th:text="${'$' + pay.amount}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section x-show="currentTab === 'shipments'" x-cloak>
+                <h1 class="text-3xl font-bold text-gray-800 mb-6">Shipments</h1>
+                <div class="bg-white shadow-sm rounded-xl border border-gray-200 overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 border-b">
+                            <tr>
+                                <th class="p-4">Shipment ID</th>
+                                <th class="p-4">Order ID</th>
+                                <th class="p-4">Destination</th>
+                                <th class="p-4">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="s : ${shipments}" class="border-b">
+                                <td class="p-4 font-mono" th:text="${s.shipmentId}"></td>
+                                <td class="p-4" th:text="${s.orderId}"></td>
+                                <td class="p-4 text-sm" th:text="${s.address}"></td>
+                                <td class="p-4" th:text="${s.status}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+</body>
+</html>

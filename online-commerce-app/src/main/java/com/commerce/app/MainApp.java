@@ -1,7 +1,15 @@
 package com.commerce.app;
 
 import io.javalin.Javalin;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import com.commerce.business.BusinessManager;
+import com.commerce.dao.DataProvider;
 import com.commerce.service.*;
+
+import io.javalin.rendering.template.JavalinThymeleaf; // Import the renderer
 
 /**
  * HOSTING DETAILS:
@@ -21,9 +29,13 @@ import com.commerce.service.*;
 public class MainApp {
     public static void main(String[] args) {
 
+        DataProvider dp = new DataProvider();
+        BusinessManager bm = new BusinessManager(dp);
+
         int port = Integer.parseInt(System.getenv().getOrDefault("PORT", "7070"));
 
         Javalin app = Javalin.create(config -> {
+            config.fileRenderer(new JavalinThymeleaf());
             // Optional: Adds a logger to see requests in your VS Code terminal
             config.requestLogger.http((ctx, ms) -> {
                 System.out.println(ctx.method() + " " + ctx.path() + " (" + ms + "ms)");
@@ -36,6 +48,26 @@ public class MainApp {
         });
         
         System.out.println("--- E-Commerce API Started ---");
+
+        // 2. The Dashboard Route
+        app.get("/dashboard", ctx -> {
+            try {
+                    Map<String, Object> model = new HashMap<>();
+                    model.put("customers", bm.getAllCustomers());
+                    model.put("products", bm.getAllProducts());
+                    model.put("orders", bm.getAllOrders());
+                    model.put("orderItems", bm.getAllOrderItems());
+                    model.put("categories", bm.getAllCategories());
+                    model.put("payments", bm.getAllPayments());
+                    model.put("shipments", bm.getAllShipments());
+                    
+                    ctx.render("templates/dashboard.html", model);
+                } catch (Exception e) {
+                    System.err.println("Dashboard Error: " + e.getMessage());
+                    ctx.status(500).result("Could not load dashboard data.");
+                }
+        });
+
 
         // --- CUSTOMER ROUTES ---
         app.get("/customers", CustomerController::getAll);
