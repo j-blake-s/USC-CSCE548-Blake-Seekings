@@ -37,10 +37,12 @@ public class CustomerController {
         Customer c = ctx.bodyAsClass(Customer.class);
         c.setCustomerId(Integer.parseInt(ctx.pathParam("id")));
         bm.saveCustomer(c);
+        ctx.header("HX-Refresh","true");
         ctx.status(200).result(""); // Success, No Content
     }
     public static void deleteOne(Context ctx) throws SQLException {
         bm.deleteCustomer(Integer.parseInt(ctx.pathParam("id")));
+        ctx.header("HX-Refresh","true");
         ctx.status(200).result("");
     }
 }

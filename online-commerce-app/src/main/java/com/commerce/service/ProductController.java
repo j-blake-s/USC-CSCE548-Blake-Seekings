@@ -31,10 +31,12 @@ public class ProductController {
         Product p = ctx.bodyAsClass(Product.class);
         p.setProductId(Integer.parseInt(ctx.pathParam("id")));
         bm.saveProduct(p);
+        ctx.header("HX-Refresh","true");
         ctx.status(200).result("");
     }
     public static void deleteOne(Context ctx) throws SQLException {
         bm.deleteProduct(Integer.parseInt(ctx.pathParam("id")));
+        ctx.header("HX-Refresh","true");
         ctx.status(200).result("");
     }
 

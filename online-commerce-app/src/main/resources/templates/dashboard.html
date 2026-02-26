@@ -7,7 +7,9 @@
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
 </head>
-<body class="bg-gray-100 font-sans" x-data="{ currentTab: 'customers' }">
+<body class="bg-gray-100 font-sans" 
+      x-data="{ currentTab: location.hash ? location.hash.substring(1) : 'customers' }"
+      x-init="$watch('currentTab', value => location.hash = value)">
 
     <div class="flex h-screen">
         <aside class="w-64 bg-slate-900 text-white flex flex-col">

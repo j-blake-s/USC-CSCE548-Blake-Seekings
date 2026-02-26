@@ -32,10 +32,12 @@ public class ShipmentController {
         Shipment s = ctx.bodyAsClass(Shipment.class);
         s.setShipmentId(Integer.parseInt(ctx.pathParam("id")));
         bm.saveShipment(s);
+        ctx.header("HX-Refresh","true");
         ctx.status(200).result("");
     }
     public static void deleteOne(Context ctx) throws SQLException {
         bm.deleteShipment(Integer.parseInt(ctx.pathParam("id")));
+        ctx.header("HX-Refresh","true");
         ctx.status(200).result("");
     }
 }

@@ -36,10 +36,12 @@ public class OrderController {
         Order o = ctx.bodyAsClass(Order.class);
         o.setOrderId(Integer.parseInt(ctx.pathParam("id")));
         bm.saveOrder(o);
+        ctx.header("HX-Refresh","true");
         ctx.status(200).result("");
     }
     public static void deleteOne(Context ctx) throws SQLException {
         bm.deleteOrder(Integer.parseInt(ctx.pathParam("id")));
+        ctx.header("HX-Refresh","true");
         ctx.status(200).result("");
     }
 
