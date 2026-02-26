@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.commerce.business.BusinessManager;
 import com.commerce.dao.DataProvider;
+import com.commerce.model.*;
 import com.commerce.service.*;
 
 import io.javalin.rendering.template.JavalinThymeleaf; // Import the renderer
@@ -55,14 +56,83 @@ public class MainApp {
 
         // Inside your main method
         // These routes return the blank forms for the modal
-        app.get("/forms/customer", ctx -> ctx.render("templates/forms/customer-form.html"));
-        app.get("/forms/product", ctx -> ctx.render("templates/forms/product-form.html"));
-        app.get("/forms/category", ctx -> ctx.render("templates/forms/category-form.html"));
-        app.get("/forms/order", ctx -> ctx.render("templates/forms/order-form.html"));
-        app.get("/forms/orderitem", ctx -> ctx.render("templates/forms/orderitem-form.html"));
-        app.get("/forms/payment", ctx -> ctx.render("templates/forms/payment-form.html"));
-        app.get("/forms/shipment", ctx -> ctx.render("templates/forms/shipment-form.html"));
-        
+        app.get("/forms/customer", ctx -> {
+            String id = ctx.queryParam("id");
+            Map<String, Object> model = new HashMap<>();
+            
+            if (id != null) {
+                // Fetch existing data for Edit mode
+                model.put("c", bm.getCustomerById(Integer.parseInt(id)));
+            } else {
+                // Pass a null/empty object for Create mode
+                model.put("c", new Customer()); 
+            }
+            ctx.render("templates/forms/customer-form.html", model);
+        });
+
+        app.get("/forms/product", ctx -> {
+            String id = ctx.queryParam("id");
+            Map<String, Object> model = new HashMap<>();
+            
+            if (id != null && !id.isEmpty()) {
+                // Edit mode: Fetch existing product
+                model.put("p", bm.getProductById(Integer.parseInt(id)));
+            } else {
+                // Create mode: Pass a new object
+                model.put("p", new Product()); 
+            }
+            ctx.render("templates/forms/product-form.html", model);
+        });
+
+        // Category Form Route
+        app.get("/forms/category", ctx -> {
+            String id = ctx.queryParam("id");
+            Map<String, Object> model = new HashMap<>();
+            model.put("cat", (id != null) ? bm.getCategoryById(Integer.parseInt(id)) : new Category());
+            ctx.render("templates/forms/category-form.html", model);
+        });
+
+        // Order Form Route
+        app.get("/forms/order", ctx -> {
+            String id = ctx.queryParam("id");
+            Map<String, Object> model = new HashMap<>();
+            if (id != null) {
+                Order o = bm.getOrderById(Integer.parseInt(id));
+                model.put("o", o);
+            } else {
+                model.put("o", new Order());
+            }
+            ctx.render("templates/forms/order-form.html", model);
+        });
+
+        app.get("/forms/orderitem", ctx -> {
+            String id = ctx.queryParam("id");
+            Map<String, Object> model = new HashMap<>();
+            
+            if (id != null && !id.isEmpty()) {
+                // Edit mode
+                model.put("item", bm.getOrderItemById(Integer.parseInt(id)));
+            } else {
+                // Create mode
+                model.put("item", new OrderItem()); 
+            }
+            ctx.render("templates/forms/orderitem-form.html", model);
+        });
+
+        app.get("/forms/payment", ctx -> {
+            String id = ctx.queryParam("id");
+            Map<String, Object> model = new HashMap<>();
+            model.put("pay", (id != null) ? bm.getPaymentById(Integer.parseInt(id)) : new Payment());
+            ctx.render("templates/forms/payment-form.html", model);
+        });
+
+        app.get("/forms/shipment", ctx -> {
+            String id = ctx.queryParam("id");
+            Map<String, Object> model = new HashMap<>();
+            model.put("s", (id != null) ? bm.getShipmentById(Integer.parseInt(id)) : new Shipment());
+            ctx.render("templates/forms/shipment-form.html", model);
+        });
+
         // 2. The Dashboard Route
         app.get("/dashboard", ctx -> {
             try {

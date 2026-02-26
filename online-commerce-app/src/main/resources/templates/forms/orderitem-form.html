@@ -1,16 +1,23 @@
-<h2 class="text-2xl font-bold mb-4 text-gray-800">Add Order Item</h2>
-<p class="text-sm text-gray-500 mb-6">Attach a product and quantity to an existing order.</p>
+<h2 class="text-2xl font-bold mb-4 text-gray-800" 
+    th:text="${item.orderItemId != 0} ? 'Edit Order Item #' + ${item.orderItemId} : 'Add New Order Item'"></h2>
 
-<form hx-post="/orderitems" hx-ext="json-enc" class="space-y-4">
+<p class="text-sm text-gray-500 mb-6">Link a specific product and quantity to an order.</p>
+
+<form th:attr="hx-put=${item.orderItemId != 0} ? '/orderitems/' + ${item.orderItemId} : '',
+              hx-post=${item.orderItemId == 0} ? '/orderitems' : ''" 
+      hx-ext="json-enc" class="space-y-4">
+    
     <div class="grid grid-cols-2 gap-4">
         <div>
             <label class="block text-sm font-medium text-gray-700">Order ID</label>
-            <input type="number" name="orderId" placeholder="5001" 
+            <input type="number" name="orderId" th:value="${item.orderId != 0 ? item.orderId : ''}" 
+                   placeholder="e.g., 5001" 
                    class="mt-1 w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" required>
         </div>
         <div>
             <label class="block text-sm font-medium text-gray-700">Product ID</label>
-            <input type="number" name="productId" placeholder="202" 
+            <input type="number" name="productId" th:value="${item.productId != 0 ? item.productId : ''}" 
+                   placeholder="e.g., 202" 
                    class="mt-1 w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" required>
         </div>
     </div>
@@ -18,12 +25,14 @@
     <div class="grid grid-cols-2 gap-4">
         <div>
             <label class="block text-sm font-medium text-gray-700">Quantity</label>
-            <input type="number" name="quantity" placeholder="1" 
+            <input type="number" name="quantity" th:value="${item.quantity}" 
+                   placeholder="1" 
                    class="mt-1 w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" required>
         </div>
         <div>
             <label class="block text-sm font-medium text-gray-700">Unit Price ($)</label>
-            <input type="number" step="0.01" name="unitPrice" placeholder="0.00" 
+            <input type="number" step="0.01" name="unitPrice" th:value="${item.unitPrice}" 
+                   placeholder="0.00" 
                    class="mt-1 w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" required>
         </div>
     </div>
@@ -32,6 +41,8 @@
         <button type="button" @click="open = false" 
                 class="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition">Cancel</button>
         <button type="submit" 
-                class="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700 transition">Save OrderItem</button>
+                class="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700 transition">
+            Save OrderItem
+        </button>
     </div>
 </form>

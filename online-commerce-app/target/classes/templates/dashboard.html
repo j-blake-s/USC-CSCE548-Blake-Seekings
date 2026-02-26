@@ -64,7 +64,14 @@
                                 <td class="p-4 text-blue-600" th:text="${c.email}"></td>
                                 <td class="p-4 text-gray-600" th:text="${c.phone}"></td>
                                 <td class="p-4 text-gray-600" th:text="${c.address}"></td>
-                                <td class="p-4 text-center">
+                                <td class="p-4 text-center space-x-2">
+                                    <button class="bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition text-xs font-bold"
+                                            th:attr="hx-get='/forms/customer?id=' + ${c.customerId}"
+                                            hx-target="#modal-content"
+                                            @click="$dispatch('open-modal')">
+                                        Edit
+                                    </button>
+
                                     <button class="bg-red-100 text-red-600 hover:bg-red-600 hover:text-white px-3 py-1 rounded transition text-xs font-bold"
                                             th:attr="hx-delete='/customers/' + ${c.customerId}, 
                                                     hx-target='#customer-row-' + ${c.customerId}"
@@ -109,7 +116,13 @@
                                 <td class="p-4 text-gray-600 text-sm" th:text="${p.description}"></td>
                                 <td class="p-4 font-semibold text-gray-900" th:text="${p.categoryId}"></td>
                                 <td class="p-4 text-right font-mono text-green-600" th:text="${'$' + p.price}"></td>
-                                <td class="p-4 text-center">
+                                <td class="p-4 text-center space-x-2">
+                                    <button class="bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition text-xs font-bold"
+                                            th:attr="hx-get='/forms/product?id=' + ${p.productId}"
+                                            hx-target="#modal-content"
+                                            @click="$dispatch('open-modal')">
+                                        Edit
+                                    </button>
                                     <button class="bg-red-100 text-red-600 hover:bg-red-600 hover:text-white px-3 py-1 rounded transition text-xs font-bold"
                                             th:attr="hx-delete='/products/' + ${p.productId}, 
                                                     hx-target='#product-row-' + ${p.productId}"
@@ -150,7 +163,13 @@
                                 <td class="p-4 font-mono text-sm text-gray-500" th:text="${cat.categoryId}"></td>
                                 <td class="p-4 font-semibold" th:text="${cat.name}"></td>
                                 <td class="p-4 text-gray-600" th:text="${cat.description}"></td>
-                                <td class="p-4 text-center">
+                                <td class="p-4 text-center space-x-2">
+                                    <button class="bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition text-xs font-bold"
+                                            th:attr="hx-get='/forms/category?id=' + ${cat.categoryId}"
+                                            hx-target="#modal-content"
+                                            @click="$dispatch('open-modal')">
+                                        Edit
+                                    </button>
                                     <button class="bg-red-100 text-red-600 hover:bg-red-600 hover:text-white px-3 py-1 rounded transition text-xs font-bold"
                                             th:attr="hx-delete='/categories/' + ${cat.categoryId}, 
                                                     hx-target='#category-row-' + ${cat.categoryId}"
@@ -199,7 +218,13 @@
                                         th:classappend="${o.status == 'Shipped' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}"
                                         th:text="${o.status}"></span>
                                 </td>
-                                <td class="p-4 text-center">
+                                <td class="p-4 text-center space-x-2">
+                                    <button class="bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition text-xs font-bold"
+                                            th:attr="hx-get='/forms/order?id=' + ${o.orderId}"
+                                            hx-target="#modal-content"
+                                            @click="$dispatch('open-modal')">
+                                        Edit
+                                    </button>
                                     <button class="bg-red-100 text-red-600 hover:bg-red-600 hover:text-white px-3 py-1 rounded transition text-xs font-bold"
                                             th:attr="hx-delete='/orders/' + ${o.orderId}, 
                                                     hx-target='#order-row-' + ${o.orderId}"
@@ -244,7 +269,13 @@
                                 <td class="p-4" th:text="${item.productId}"></td>
                                 <td class="p-4" th:text="${item.quantity}"></td>
                                 <td class="p-4" th:text="${'$' + item.unitPrice}"></td>
-                                <td class="p-4 text-center">
+                                <td class="p-4 text-center space-x-2">
+                                    <button class="bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition text-xs font-bold"
+                                            th:attr="hx-get='/forms/orderitem?id=' + ${item.orderItemId}"
+                                            hx-target="#modal-content"
+                                            @click="$dispatch('open-modal')">
+                                        Edit
+                                    </button>
                                     <button class="bg-red-100 text-red-600 hover:bg-red-600 hover:text-white px-3 py-1 rounded transition text-xs font-bold"
                                             th:attr="hx-delete='/orderitems/' + ${item.orderItemId}, 
                                                     hx-target='#orderItem-row-' + ${item.orderItemId}"
@@ -289,7 +320,13 @@
                                 <td class="p-4 text-gray-600" th:text="${pay.paymentMethod}"></td>
                                 <td class="p-4 text-gray-600" th:text="${pay.paymentDate}"></td>
                                 <td class="p-4 font-bold text-indigo-700" th:text="${'$' + pay.amount}"></td>
-                                <td class="p-4 text-center">
+                                 <td class="p-4 text-center space-x-2">
+                                    <button class="bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition text-xs font-bold"
+                                            th:attr="hx-get='/forms/payment?id=' + ${pay.paymentId}"
+                                            hx-target="#modal-content"
+                                            @click="$dispatch('open-modal')">
+                                        Edit
+                                    </button>
                                     <button class="bg-red-100 text-red-600 hover:bg-red-600 hover:text-white px-3 py-1 rounded transition text-xs font-bold"
                                             th:attr="hx-delete='/payments/' + ${pay.paymentId}, 
                                                     hx-target='#payment-row-' + ${pay.paymentId}"
@@ -332,7 +369,13 @@
                                 <td class="p-4" th:text="${s.orderId}"></td>
                                 <td class="p-4 text-sm" th:text="${s.address}"></td>
                                 <td class="p-4" th:text="${s.status}"></td>
-                                <td class="p-4 text-center">
+                                <td class="p-4 text-center space-x-2">
+                                    <button class="bg-blue-100 text-blue-600 hover:bg-blue-600 hover:text-white px-3 py-1 rounded transition text-xs font-bold"
+                                            th:attr="hx-get='/forms/shipment?id=' + ${s.shipmentId}"
+                                            hx-target="#modal-content"
+                                            @click="$dispatch('open-modal')">
+                                        Edit
+                                    </button>
                                     <button class="bg-red-100 text-red-600 hover:bg-red-600 hover:text-white px-3 py-1 rounded transition text-xs font-bold"
                                             th:attr="hx-delete='/shipments/' + ${s.shipmentId}, 
                                                     hx-target='#shipment-row-' + ${s.shipmentId}"

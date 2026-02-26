@@ -10,12 +10,13 @@ import java.util.List;
 public class PaymentDAO {
     // CREATE
     public Payment create(Payment p) throws SQLException {
-        String sql = "INSERT INTO Payments (order_id, amount, payment_method) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO Payments (order_id, payment_date, amount, payment_method) VALUES (?, ?, ?)";
         try (Connection conn = DatabaseUtil.getConnection(); 
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, p.getOrderId());
-            ps.setBigDecimal(2, p.getAmount());
-            ps.setString(3, p.getPaymentMethod());
+            ps.setString(2, p.getPaymentDate());
+            ps.setBigDecimal(3, p.getAmount());
+            ps.setString(4, p.getPaymentMethod());
             ps.executeUpdate();
             ResultSet keys = ps.getGeneratedKeys();
             if (keys.next()) {
@@ -78,12 +79,13 @@ public class PaymentDAO {
 
     // UPDATE
     public void update(Payment p) throws SQLException {
-        String sql = "UPDATE Payments SET amount = ?, payment_method = ? WHERE payment_id = ?";
+        String sql = "UPDATE Payments SET payment_date =?, amount = ?, payment_method = ? WHERE payment_id = ?";
         try (Connection conn = DatabaseUtil.getConnection(); 
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setBigDecimal(1, p.getAmount());
-            ps.setString(2, p.getPaymentMethod());
-            ps.setInt(3, p.getPaymentId());
+            ps.setString(1, p.getPaymentDate());
+            ps.setBigDecimal(2, p.getAmount());
+            ps.setString(3, p.getPaymentMethod());
+            ps.setInt(4, p.getPaymentId());
             ps.executeUpdate();
         }
     }

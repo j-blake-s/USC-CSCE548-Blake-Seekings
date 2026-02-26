@@ -1,33 +1,36 @@
-<h2 class="text-2xl font-bold mb-4 text-gray-800">Create New Order</h2>
-<p class="text-sm text-gray-500 mb-6">Manually record a transaction for an existing customer.</p>
+<h2 class="text-2xl font-bold mb-4 text-gray-800" 
+    th:text="${o.orderId != 0} ? 'Edit Order #' + ${o.orderId} : 'Create New Order'"></h2>
 
-<form hx-post="/orders" hx-ext="json-enc" class="space-y-4">
+<form th:attr="hx-put=${o.orderId != 0} ? '/orders/' + ${o.orderId} : '',
+              hx-post=${o.orderId == 0} ? '/orders' : ''" 
+      hx-ext="json-enc" class="space-y-4">
+    
     <div class="grid grid-cols-2 gap-4">
         <div>
             <label class="block text-sm font-medium text-gray-700">Customer ID</label>
-            <input type="number" name="customerId" placeholder="101" 
-                   class="mt-1 w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" required>
+            <input type="number" name="customerId" th:value="${o.customerId}" placeholder="101" 
+                   class="mt-1 w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" required>
         </div>
         <div>
             <label class="block text-sm font-medium text-gray-700">Order Date</label>
-            <input type="date" name="orderDate" 
-                   class="mt-1 w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" required>
+            <input type="date" name="orderDate" th:value="${o.orderDate}" 
+                   class="mt-1 w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" required>
         </div>
     </div>
 
     <div class="grid grid-cols-2 gap-4">
         <div>
             <label class="block text-sm font-medium text-gray-700">Total Amount ($)</label>
-            <input type="number" step="0.01" name="totalAmount" placeholder="0.00" 
-                   class="mt-1 w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none" required>
+            <input type="number" step="0.01" name="totalAmount" th:value="${o.totalAmount}" placeholder="0.00" 
+                   class="mt-1 w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-green-500 outline-none" required>
         </div>
         <div>
             <label class="block text-sm font-medium text-gray-700">Status</label>
-            <select name="status" class="mt-1 w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none bg-white">
-                <option value="Pending">Pending</option>
-                <option value="Shipped">Shipped</option>
-                <option value="Delivered">Delivered</option>
-                <option value="Cancelled">Cancelled</option>
+            <select name="status" class="mt-1 w-full border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-green-500 outline-none bg-white">
+                <option value="Pending" th:selected="${o.status == 'Pending'}">Pending</option>
+                <option value="Shipped" th:selected="${o.status == 'Shipped'}">Shipped</option>
+                <option value="Delivered" th:selected="${o.status == 'Delivered'}">Delivered</option>
+                <option value="Cancelled" th:selected="${o.status == 'Cancelled'}">Cancelled</option>
             </select>
         </div>
     </div>
