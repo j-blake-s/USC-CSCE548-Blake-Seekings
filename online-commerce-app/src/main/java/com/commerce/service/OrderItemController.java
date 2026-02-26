@@ -32,11 +32,11 @@ public class OrderItemController {
         OrderItem oi = ctx.bodyAsClass(OrderItem.class);
         oi.setOrderItemId(Integer.parseInt(ctx.pathParam("id")));
         bm.saveOrderItem(oi);
-        ctx.status(204);
+        ctx.status(200).result("");
     }
     public static void deleteOne(Context ctx) throws SQLException {
         bm.deleteOrderItem(Integer.parseInt(ctx.pathParam("id")));
-        ctx.status(204);
+        ctx.status(200).result("");
     }
 
 }

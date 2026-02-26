@@ -14,7 +14,7 @@ public class DatabaseUtil {
         
         // If we are running locally and the variable is missing, use your local setup
         if (dbUrl == null) {
-            String url = "jdbc:mysql://localhost:3306/online_commerce?allowPublicKeyRetrieval=true&useSSL=false";
+            String url = "jdbc:mysql://localhost:3306/railway?allowPublicKeyRetrieval=true&useSSL=false";
             String user = "root";
             String password = "password";
             return DriverManager.getConnection(url, user, password);

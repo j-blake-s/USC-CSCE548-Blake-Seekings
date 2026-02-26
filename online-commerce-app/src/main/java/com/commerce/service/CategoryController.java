@@ -32,11 +32,11 @@ public class CategoryController {
         Category cat = ctx.bodyAsClass(Category.class);
         cat.setCategoryId(Integer.parseInt(ctx.pathParam("id")));
         bm.saveCategory(cat);
-        ctx.status(204);
+        ctx.status(200).result("");
     }
     
     public static void deleteOne(Context ctx) throws SQLException {
         bm.deleteCategory(Integer.parseInt(ctx.pathParam("id")));
-        ctx.status(204);
+        ctx.status(200);
     }
 }

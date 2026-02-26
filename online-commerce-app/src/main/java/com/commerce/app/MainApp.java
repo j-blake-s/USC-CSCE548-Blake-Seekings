@@ -2,6 +2,7 @@ package com.commerce.app;
 
 import io.javalin.Javalin;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,9 +43,12 @@ public class MainApp {
             });
         }).start(port);
 
-        app.exception(Exception.class, (e, ctx) -> {
-            System.out.println("Error: " + e.getMessage());
-            ctx.status(500).result("Internal Server Error");
+        app.exception(SQLException.class, (e, ctx) -> {
+            if (e.getMessage().contains("foreign key constraint")) {
+                    ctx.status(409).result("Cannot delete: This record is linked to other data.");
+                } else {
+                    ctx.status(500).result("Database Error");
+                }
         });
         
         System.out.println("--- E-Commerce API Started ---");
@@ -118,7 +122,7 @@ public class MainApp {
         app.put("/shipments/{id}", ShipmentController::update);
         app.delete("/shipments/{id}", ShipmentController::deleteOne);
 
-        System.out.println("All routes registered. Testing at http://localhost:7070/customers");
+        System.out.println("All routes registered. Testing at http://localhost:7070/dashboard");
         
    
     }

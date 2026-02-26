@@ -5,6 +5,7 @@
     <title>E-Commerce Admin Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
 </head>
 <body class="bg-gray-100 font-sans" x-data="{ currentTab: 'customers' }">
 
@@ -44,14 +45,25 @@
                                 <th class="p-4 font-semibold text-gray-600">Full Name</th>
                                 <th class="p-4 font-semibold text-gray-600">Email</th>
                                 <th class="p-4 font-semibold text-gray-600">Phone</th>
+                                <th class="p-4 font-semibold text-gray-600">Address</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
-                            <tr th:each="c : ${customers}" class="hover:bg-gray-50 transition">
+                            <tr th:each="c : ${customers}" th:id="'customer-row-' + ${c.customerId}" class="hover:bg-gray-50 transition">
                                 <td class="p-4 text-sm font-mono text-gray-500" th:text="${c.customerId}"></td>
                                 <td class="p-4 font-medium text-gray-900" th:text="${c.firstName + ' ' + c.lastName}"></td>
                                 <td class="p-4 text-blue-600" th:text="${c.email}"></td>
                                 <td class="p-4 text-gray-600" th:text="${c.phone}"></td>
+                                <td class="p-4 text-gray-600" th:text="${c.address}"></td>
+                                <td class="p-4 text-center">
+                                    <button class="bg-red-100 text-red-600 hover:bg-red-600 hover:text-white px-3 py-1 rounded transition text-xs font-bold"
+                                            th:attr="hx-delete='/customers/' + ${c.customerId}, 
+                                                    hx-target='#customer-row-' + ${c.customerId}"
+                                            hx-confirm="Are you sure you want to delete this customer?"
+                                            hx-swap="outerHTML">
+                                        Delete
+                                    </button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -59,21 +71,38 @@
             </section>
 
             <section x-show="currentTab === 'products'">
-                <h1 class="text-3xl font-bold text-gray-800 mb-6">Products</h1>
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-3xl font-bold text-gray-800 mb-6">Products</h1>
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold" 
+                          th:text="${products.size() + ' Total'}"></span>
+                </div>
                 <div class="bg-white shadow-sm rounded-xl border border-gray-200 overflow-hidden">
                     <table class="w-full text-left">
                         <thead class="bg-gray-50 border-b">
                             <tr>
+                                <th class="p-4">Product ID</th>
                                 <th class="p-4">Name</th>
                                 <th class="p-4">Description</th>
+                                <th class="p-4">Category ID</th>
                                 <th class="p-4 text-right">Price</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="p : ${products}" class="border-b hover:bg-gray-50 transition">
+                            <tr th:each="p : ${products}" th:id="'product-row-' + ${p.productId}" class="border-b hover:bg-gray-50 transition">
+                                <td class="p-4 font-semibold text-gray-900" th:text="${p.productId}"></td>
                                 <td class="p-4 font-semibold text-gray-900" th:text="${p.name}"></td>
                                 <td class="p-4 text-gray-600 text-sm" th:text="${p.description}"></td>
+                                <td class="p-4 font-semibold text-gray-900" th:text="${p.categoryId}"></td>
                                 <td class="p-4 text-right font-mono text-green-600" th:text="${'$' + p.price}"></td>
+                                <td class="p-4 text-center">
+                                    <button class="bg-red-100 text-red-600 hover:bg-red-600 hover:text-white px-3 py-1 rounded transition text-xs font-bold"
+                                            th:attr="hx-delete='/products/' + ${p.productId}, 
+                                                    hx-target='#product-row-' + ${p.productId}"
+                                            hx-confirm="Are you sure you want to delete this product?"
+                                            hx-swap="outerHTML">
+                                        Delete
+                                    </button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -81,7 +110,11 @@
             </section>
 
             <section x-show="currentTab === 'categories'" x-cloak>
-                <h1 class="text-3xl font-bold text-gray-800 mb-6">Categories</h1>
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-3xl font-bold text-gray-800 mb-6">Categories</h1>
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold" 
+                          th:text="${categories.size() + ' Total'}"></span>
+                </div>
                 <div class="bg-white shadow-sm rounded-xl border border-gray-200 overflow-hidden">
                     <table class="w-full text-left">
                         <thead class="bg-gray-50 border-b">
@@ -92,10 +125,19 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
-                            <tr th:each="cat : ${categories}" class="hover:bg-gray-50">
+                            <tr th:each="cat : ${categories}" th:id="'category-row-' + ${cat.categoryId}" class="hover:bg-gray-50">
                                 <td class="p-4 font-mono text-sm text-gray-500" th:text="${cat.categoryId}"></td>
                                 <td class="p-4 font-semibold" th:text="${cat.name}"></td>
                                 <td class="p-4 text-gray-600" th:text="${cat.description}"></td>
+                                <td class="p-4 text-center">
+                                    <button class="bg-red-100 text-red-600 hover:bg-red-600 hover:text-white px-3 py-1 rounded transition text-xs font-bold"
+                                            th:attr="hx-delete='/categories/' + ${cat.categoryId}, 
+                                                    hx-target='#category-row-' + ${cat.categoryId}"
+                                            hx-confirm="Are you sure you want to delete this category?"
+                                            hx-swap="outerHTML">
+                                        Delete
+                                    </button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -103,7 +145,11 @@
             </section>
 
             <section x-show="currentTab === 'orders'" x-cloak>
-                <h1 class="text-3xl font-bold text-gray-800 mb-6">Orders</h1>
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-3xl font-bold text-gray-800 mb-6">Orders</h1>
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold" 
+                          th:text="${orders.size() + ' Total'}"></span>
+                </div>
                 <div class="bg-white shadow-sm rounded-xl border border-gray-200 overflow-hidden">
                     <table class="w-full text-left">
                         <thead class="bg-gray-50 border-b">
@@ -116,7 +162,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="o : ${orders}" class="border-b hover:bg-gray-50">
+                            <tr th:each="o : ${orders}" th:id="'order-row-' + ${o.orderId}"class="border-b hover:bg-gray-50">
                                 <td class="p-4 font-mono" th:text="${o.orderId}"></td>
                                 <td class="p-4" th:text="${o.customerId}"></td>
                                 <td class="p-4" th:text="${o.orderDate}"></td>
@@ -126,6 +172,15 @@
                                         th:classappend="${o.status == 'Shipped' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}"
                                         th:text="${o.status}"></span>
                                 </td>
+                                <td class="p-4 text-center">
+                                    <button class="bg-red-100 text-red-600 hover:bg-red-600 hover:text-white px-3 py-1 rounded transition text-xs font-bold"
+                                            th:attr="hx-delete='/orders/' + ${o.orderId}, 
+                                                    hx-target='#order-row-' + ${o.orderId}"
+                                            hx-confirm="Are you sure you want to delete this order?"
+                                            hx-swap="outerHTML">
+                                        Delete
+                                    </button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -133,7 +188,11 @@
             </section>
 
             <section x-show="currentTab === 'orderItems'" x-cloak>
-                <h1 class="text-3xl font-bold text-gray-800 mb-6">Order Line Items</h1>
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-3xl font-bold text-gray-800 mb-6">Order Items</h1>
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold" 
+                          th:text="${orderItems.size() + ' Total'}"></span>
+                </div>
                 <div class="bg-white shadow-sm rounded-xl border border-gray-200 overflow-hidden">
                     <table class="w-full text-left text-sm">
                         <thead class="bg-gray-50 border-b">
@@ -146,12 +205,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="item : ${orderItems}" class="border-b">
+                            <tr th:each="item : ${orderItems}" th:id="'orderItem-row-' + ${item.orderItemId}" class="border-b">
                                 <td class="p-4 font-mono" th:text="${item.orderItemId}"></td>
                                 <td class="p-4" th:text="${item.orderId}"></td>
                                 <td class="p-4" th:text="${item.productId}"></td>
                                 <td class="p-4" th:text="${item.quantity}"></td>
                                 <td class="p-4" th:text="${'$' + item.unitPrice}"></td>
+                                <td class="p-4 text-center">
+                                    <button class="bg-red-100 text-red-600 hover:bg-red-600 hover:text-white px-3 py-1 rounded transition text-xs font-bold"
+                                            th:attr="hx-delete='/orderitems/' + ${item.orderItemId}, 
+                                                    hx-target='#orderItem-row-' + ${item.orderItemId}"
+                                            hx-confirm="Are you sure you want to delete this order item?"
+                                            hx-swap="outerHTML">
+                                        Delete
+                                    </button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -159,7 +227,11 @@
             </section>
 
             <section x-show="currentTab === 'payments'" x-cloak>
-                <h1 class="text-3xl font-bold text-gray-800 mb-6">Payments</h1>
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-3xl font-bold text-gray-800 mb-6">Payments</h1>
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold" 
+                          th:text="${payments.size() + ' Total'}"></span>
+                </div>
                 <div class="bg-white shadow-sm rounded-xl border border-gray-200 overflow-hidden">
                     <table class="w-full text-left">
                         <thead class="bg-gray-50 border-b">
@@ -167,15 +239,26 @@
                                 <th class="p-4">Payment ID</th>
                                 <th class="p-4">Order ID</th>
                                 <th class="p-4">Method</th>
+                                <th class="p-4">Date</th>
                                 <th class="p-4">Amount</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="pay : ${payments}" class="border-b">
+                            <tr th:each="pay : ${payments}" th:id="'payment-row-' + ${pay.paymentId}" class="border-b">
                                 <td class="p-4 font-mono" th:text="${pay.paymentId}"></td>
                                 <td class="p-4" th:text="${pay.orderId}"></td>
                                 <td class="p-4 text-gray-600" th:text="${pay.paymentMethod}"></td>
+                                <td class="p-4 text-gray-600" th:text="${pay.paymentDate}"></td>
                                 <td class="p-4 font-bold text-indigo-700" th:text="${'$' + pay.amount}"></td>
+                                <td class="p-4 text-center">
+                                    <button class="bg-red-100 text-red-600 hover:bg-red-600 hover:text-white px-3 py-1 rounded transition text-xs font-bold"
+                                            th:attr="hx-delete='/payments/' + ${pay.paymentId}, 
+                                                    hx-target='#payment-row-' + ${pay.paymentId}"
+                                            hx-confirm="Are you sure you want to delete this payment?"
+                                            hx-swap="outerHTML">
+                                        Delete
+                                    </button>
+                                </td>                               
                             </tr>
                         </tbody>
                     </table>
@@ -183,7 +266,11 @@
             </section>
 
             <section x-show="currentTab === 'shipments'" x-cloak>
-                <h1 class="text-3xl font-bold text-gray-800 mb-6">Shipments</h1>
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-3xl font-bold text-gray-800 mb-6">Shipments</h1>
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold" 
+                          th:text="${shipments.size() + ' Total'}"></span>
+                </div>
                 <div class="bg-white shadow-sm rounded-xl border border-gray-200 overflow-hidden">
                     <table class="w-full text-left">
                         <thead class="bg-gray-50 border-b">
@@ -195,11 +282,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="s : ${shipments}" class="border-b">
+                            <tr th:each="s : ${shipments}" th:id="'shipment-row-' + ${s.shipmentId}" class="border-b">
                                 <td class="p-4 font-mono" th:text="${s.shipmentId}"></td>
                                 <td class="p-4" th:text="${s.orderId}"></td>
                                 <td class="p-4 text-sm" th:text="${s.address}"></td>
                                 <td class="p-4" th:text="${s.status}"></td>
+                                <td class="p-4 text-center">
+                                    <button class="bg-red-100 text-red-600 hover:bg-red-600 hover:text-white px-3 py-1 rounded transition text-xs font-bold"
+                                            th:attr="hx-delete='/shipments/' + ${s.shipmentId}, 
+                                                    hx-target='#shipment-row-' + ${s.shipmentId}"
+                                            hx-confirm="Are you sure you want to delete this shipment?"
+                                            hx-swap="outerHTML">
+                                        Delete
+                                    </button>
+                                </td> 
                             </tr>
                         </tbody>
                     </table>

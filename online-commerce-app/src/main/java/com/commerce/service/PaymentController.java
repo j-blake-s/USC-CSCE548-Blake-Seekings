@@ -32,12 +32,12 @@ public class PaymentController {
         Payment p = ctx.bodyAsClass(Payment.class);
         p.setPaymentId(Integer.parseInt(ctx.pathParam("id")));
         bm.savePayment(p);
-        ctx.status(204);
+        ctx.status(200).result("");
     }
 
     public static void deleteOne(Context ctx) throws SQLException {
         bm.deletePayment(Integer.parseInt(ctx.pathParam("id")));
-        ctx.status(204);
+        ctx.status(200).result("");
     }
 
 }
