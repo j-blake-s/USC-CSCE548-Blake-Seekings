@@ -29,7 +29,7 @@ CREATE TABLE Products (
 CREATE TABLE Orders (
     order_id INT AUTO_INCREMENT PRIMARY KEY,
     customer_id INT,
-    order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    order_date DATE DEFAULT (CURRENT_DATE),
     total_amount DECIMAL(10, 2) DEFAULT 0.00,
     status ENUM('Pending', 'Shipped', 'Delivered', 'Cancelled') DEFAULT 'Pending',
     FOREIGN KEY (customer_id) REFERENCES Customers(customer_id) ON DELETE SET NULL
@@ -48,7 +48,7 @@ CREATE TABLE Order_Items (
 CREATE TABLE Payments (
     payment_id INT AUTO_INCREMENT PRIMARY KEY,
     order_id INT,
-    payment_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    payment_date DATE DEFAULT (CURRENT_DATE),
     amount DECIMAL(10, 2) NOT NULL,
     payment_method ENUM('Credit Card', 'PayPal', 'Bank Transfer') NOT NULL,
     FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE SET NULL
