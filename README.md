@@ -1,3 +1,5 @@
+Deployed App can be found here: https://usc-csce548-blake-seekings-production.up.railway.app/dashboard
+
 # Online Commerce Admin Dashboard
 
 A high-performance, full-stack management platform for e-commerce operations. This application provides a centralized administrative interface to manage customers, products, categories, orders, and logistics.
@@ -59,3 +61,4 @@ Once the configuration is complete, you can verify the layers of the application
 While **MainApp.java** is running, you can interact with the client layer:
 * **URL**: Navigate to [http://localhost:7070/dashboard](http://localhost:7070/dashboard) in your web browser.
 * **Functionality**: From this interface, you can view all tables, insert new records, and edit or delete existing entries.
+
