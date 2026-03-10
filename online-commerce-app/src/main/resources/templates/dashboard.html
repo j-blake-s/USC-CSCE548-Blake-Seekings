@@ -42,6 +42,22 @@
                             class="bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-indigo-700 transition">
                         + Add Customer
                     </button>
+
+                    <div class="flex bg-white border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500">
+                        <input type="number" 
+                            name="searchId" 
+                            id="customerSearchInput"
+                            placeholder="ID..." 
+                            class="px-3 py-2 w-24 focus:outline-none text-sm">
+                        <button hx-get="/customers" 
+                                hx-include="#customerSearchInput"
+                                hx-target="#customer-table-body"
+                                hx-select="#customer-table-body tr"
+                                class="bg-indigo-600 text-white px-4 py-2 text-sm font-bold hover:bg-indigo-700 transition">
+                            Search
+                        </button>
+                    </div>
+
                     <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold" 
                           th:text="${customers.size() + ' Total'}"></span>
                 </div>
@@ -57,7 +73,7 @@
                                 <th class="p-4 font-semibold text-gray-600">Address</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-100">
+                        <tbody id="customer-table-body" class="divide-y divide-gray-100">
                             <tr th:each="c : ${customers}" th:id="'customer-row-' + ${c.customerId}" class="hover:bg-gray-50 transition">
                                 <td class="p-4 text-sm font-mono text-gray-500" th:text="${c.customerId}"></td>
                                 <td class="p-4 font-medium text-gray-900" th:text="${c.firstName + ' ' + c.lastName}"></td>
@@ -95,6 +111,22 @@
                             class="bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-indigo-700 transition">
                         + Add Product
                     </button>
+
+                    <div class="flex bg-white border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500">
+                        <input type="number" 
+                            name="searchId" 
+                            id="productSearchInput"
+                            placeholder="ID..." 
+                            class="px-3 py-2 w-24 focus:outline-none text-sm">
+                        <button hx-get="/products" 
+                                hx-include="#productSearchInput"
+                                hx-target="#product-table-body"
+                                hx-select="#product-table-body tr"
+                                class="bg-indigo-600 text-white px-4 py-2 text-sm font-bold hover:bg-indigo-700 transition">
+                            Search
+                        </button>
+                    </div>
+
                     <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold" 
                           th:text="${products.size() + ' Total'}"></span>
                 </div>
@@ -109,7 +141,7 @@
                                 <th class="p-4 text-right">Price</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="product-table-body">
                             <tr th:each="p : ${products}" th:id="'product-row-' + ${p.productId}" class="border-b hover:bg-gray-50 transition">
                                 <td class="p-4 font-semibold text-gray-900" th:text="${p.productId}"></td>
                                 <td class="p-4 font-semibold text-gray-900" th:text="${p.name}"></td>
@@ -146,6 +178,22 @@
                             class="bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-indigo-700 transition">
                         + Add Category
                     </button>
+
+                    <div class="flex bg-white border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500">
+                        <input type="number" 
+                            name="searchId" 
+                            id="categorySearchInput"
+                            placeholder="ID..." 
+                            class="px-3 py-2 w-24 focus:outline-none text-sm">
+                        <button hx-get="/categories" 
+                                hx-include="#categorySearchInput"
+                                hx-target="#category-table-body"
+                                hx-select="#category-table-body tr"
+                                class="bg-indigo-600 text-white px-4 py-2 text-sm font-bold hover:bg-indigo-700 transition">
+                            Search
+                        </button>
+                    </div>
+
                     <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold" 
                           th:text="${categories.size() + ' Total'}"></span>
                 </div>
@@ -158,7 +206,7 @@
                                 <th class="p-4">Description</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-100">
+                        <tbody id="category-table-body" class="divide-y divide-gray-100">
                             <tr th:each="cat : ${categories}" th:id="'category-row-' + ${cat.categoryId}" class="hover:bg-gray-50">
                                 <td class="p-4 font-mono text-sm text-gray-500" th:text="${cat.categoryId}"></td>
                                 <td class="p-4 font-semibold" th:text="${cat.name}"></td>
@@ -193,6 +241,22 @@
                             class="bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-indigo-700 transition">
                         + Add Order
                     </button>
+
+                    <div class="flex bg-white border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500">
+                        <input type="number" 
+                            name="searchId" 
+                            id="orderSearchInput"
+                            placeholder="ID..." 
+                            class="px-3 py-2 w-24 focus:outline-none text-sm">
+                        <button hx-get="/orders" 
+                                hx-include="#orderSearchInput"
+                                hx-target="#order-table-body"
+                                hx-select="#order-table-body tr"
+                                class="bg-indigo-600 text-white px-4 py-2 text-sm font-bold hover:bg-indigo-700 transition">
+                            Search
+                        </button>
+                    </div>
+
                     <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold" 
                           th:text="${orders.size() + ' Total'}"></span>
                 </div>
@@ -207,7 +271,7 @@
                                 <th class="p-4">Status</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="order-table-body">
                             <tr th:each="o : ${orders}" th:id="'order-row-' + ${o.orderId}"class="border-b hover:bg-gray-50">
                                 <td class="p-4 font-mono" th:text="${o.orderId}"></td>
                                 <td class="p-4" th:text="${o.customerId}"></td>
@@ -248,6 +312,21 @@
                             class="bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-indigo-700 transition">
                         + Add Order Item
                     </button>
+                    <div class="flex bg-white border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500">
+                        <input type="number" 
+                            name="searchId" 
+                            id="orderItemSearchInput"
+                            placeholder="ID..." 
+                            class="px-3 py-2 w-24 focus:outline-none text-sm">
+                        <button hx-get="/orderitems" 
+                                hx-include="#orderItemSearchInput"
+                                hx-target="#orderItem-table-body"
+                                hx-select="#orderItem-table-body tr"
+                                class="bg-indigo-600 text-white px-4 py-2 text-sm font-bold hover:bg-indigo-700 transition">
+                            Search
+                        </button>
+                    </div>
+                    
                     <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold" 
                           th:text="${orderItems.size() + ' Total'}"></span>
                 </div>
@@ -262,7 +341,7 @@
                                 <th class="p-4">Price</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="orderItem-table-body">
                             <tr th:each="item : ${orderItems}" th:id="'orderItem-row-' + ${item.orderItemId}" class="border-b">
                                 <td class="p-4 font-mono" th:text="${item.orderItemId}"></td>
                                 <td class="p-4" th:text="${item.orderId}"></td>
@@ -299,6 +378,21 @@
                             class="bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-indigo-700 transition">
                         + Add Payment
                     </button>
+                    <div class="flex bg-white border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500">
+                        <input type="number" 
+                            name="searchId" 
+                            id="paymentSearchInput"
+                            placeholder="ID..." 
+                            class="px-3 py-2 w-24 focus:outline-none text-sm">
+                        <button hx-get="/payments" 
+                                hx-include="#paymentSearchInput"
+                                hx-target="#payment-table-body"
+                                hx-select="#payment-table-body tr"
+                                class="bg-indigo-600 text-white px-4 py-2 text-sm font-bold hover:bg-indigo-700 transition">
+                            Search
+                        </button>
+                    </div>
+            
                     <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold" 
                           th:text="${payments.size() + ' Total'}"></span>
                 </div>
@@ -313,7 +407,7 @@
                                 <th class="p-4">Amount</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="payment-table-body">
                             <tr th:each="pay : ${payments}" th:id="'payment-row-' + ${pay.paymentId}" class="border-b">
                                 <td class="p-4 font-mono" th:text="${pay.paymentId}"></td>
                                 <td class="p-4" th:text="${pay.orderId}"></td>
@@ -350,6 +444,22 @@
                             class="bg-indigo-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-indigo-700 transition">
                         + Add Shipment
                     </button>
+
+                    <div class="flex bg-white border border-gray-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500">
+                        <input type="number" 
+                            name="searchId" 
+                            id="shipmentSearchInput"
+                            placeholder="ID..." 
+                            class="px-3 py-2 w-24 focus:outline-none text-sm">
+                        <button hx-get="/shipments" 
+                                hx-include="#shipmentSearchInput"
+                                hx-target="#shipment-table-body"
+                                hx-select="#shipment-table-body tr"
+                                class="bg-indigo-600 text-white px-4 py-2 text-sm font-bold hover:bg-indigo-700 transition">
+                            Search
+                        </button>
+                    </div>
+
                     <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold" 
                           th:text="${shipments.size() + ' Total'}"></span>
                 </div>
@@ -363,7 +473,7 @@
                                 <th class="p-4">Status</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="shipment-table-body">
                             <tr th:each="s : ${shipments}" th:id="'shipment-row-' + ${s.shipmentId}" class="border-b">
                                 <td class="p-4 font-mono" th:text="${s.shipmentId}"></td>
                                 <td class="p-4" th:text="${s.orderId}"></td>

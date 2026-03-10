@@ -3,7 +3,9 @@ package com.commerce.app;
 import io.javalin.Javalin;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.commerce.business.BusinessManager;
@@ -59,15 +61,18 @@ public class MainApp {
         app.get("/forms/customer", ctx -> {
             String id = ctx.queryParam("id");
             Map<String, Object> model = new HashMap<>();
-            
+                          
+        
             if (id != null) {
                 // Fetch existing data for Edit mode
                 model.put("c", bm.getCustomerById(Integer.parseInt(id)));
-            } else {
+            } 
+            else {
                 // Pass a null/empty object for Create mode
                 model.put("c", new Customer()); 
             }
             ctx.render("templates/forms/customer-form.html", model);
+
         });
 
         app.get("/forms/product", ctx -> {
@@ -152,52 +157,227 @@ public class MainApp {
                 }
         });
 
-
         // --- CUSTOMER ROUTES ---
-        app.get("/customers", CustomerController::getAll);
-        app.get("/customers/{id}", CustomerController::getOne);
+        app.get("/customers", ctx -> {
+            String searchId = ctx.queryParam("searchId");
+            Map<String, Object> model = new HashMap<>();
+            
+            if (searchId != null && !searchId.isEmpty()) {
+                Customer c = bm.getCustomerById(Integer.parseInt(searchId));
+                model.put("customers", (c != null) ? List.of(c) : List.of());
+            } else {
+                model.put("customers", bm.getAllCustomers());
+            }
+            model.put("products", new ArrayList<>());
+            model.put("orders", new ArrayList<>());
+            model.put("orderItems", new ArrayList<>());
+            model.put("categories", new ArrayList<>());
+            model.put("payments", new ArrayList<>());
+            model.put("shipments", new ArrayList<>());
+            ctx.render("templates/dashboard.html", model);
+        });
         app.post("/customers", CustomerController::create);
         app.put("/customers/{id}", CustomerController::update);
         app.delete("/customers/{id}", CustomerController::deleteOne);
 
         // --- PRODUCT ROUTES ---
-        app.get("/products", ProductController::getAll);
-        app.get("/products/{id}", ProductController::getOne);
+        app.get("/products", ctx -> {
+            String searchId = ctx.queryParam("searchId");
+            Map<String, Object> model = new HashMap<>();
+            
+            // Handle the Search Logic for Products
+            List<Product> productResult = new ArrayList<>();
+            if (searchId != null && !searchId.isEmpty()) {
+                try {
+                    // Use your business manager to get the specific product
+                    Product p = bm.getProductById(Integer.parseInt(searchId));
+                    if (p != null) productResult.add(p);
+                } catch (NumberFormatException e) {
+                    // Non-numeric input returns an empty list
+                }
+            } else {
+                productResult = bm.getAllProducts();
+            }
+            model.put("products", productResult);
+            
+            // Provide empty lists for other models to prevent Thymeleaf 500 errors
+            model.put("customers", new ArrayList<>());
+            model.put("orders", new ArrayList<>());
+            model.put("orderItems", new ArrayList<>());
+            model.put("categories", new ArrayList<>());
+            model.put("payments", new ArrayList<>());
+            model.put("shipments", new ArrayList<>());
+
+            ctx.render("templates/dashboard.html", model);
+        });
+
+        // app.get("/products/{id}", ProductController::getOne);
         app.post("/products", ProductController::create);
         app.put("/products/{id}", ProductController::update);
         app.delete("/products/{id}", ProductController::deleteOne);
 
         // --- CATEGORY ROUTES ---
-        app.get("/categories", CategoryController::getAll);
-        app.get("/categories/{id}", CategoryController::getOne);
+        app.get("/categories", ctx -> {
+            String searchId = ctx.queryParam("searchId");
+            Map<String, Object> model = new HashMap<>();
+            
+            // 1. Handle the Search Logic for Categories
+            List<Category> categoryResult = new ArrayList<>();
+            if (searchId != null && !searchId.isEmpty()) {
+                try {
+                    Category cat = bm.getCategoryById(Integer.parseInt(searchId));
+                    if (cat != null) categoryResult.add(cat);
+                } catch (NumberFormatException e) {
+                    // Return empty list if input is not a valid number
+                }
+            } else {
+                categoryResult = bm.getAllCategories();
+            }
+            model.put("categories", categoryResult);
+
+            // 2. Prevent 500 Errors by providing empty lists for other objects 
+            // referenced in dashboard.html
+            model.put("customers", new ArrayList<>());
+            model.put("products", new ArrayList<>());
+            model.put("orders", new ArrayList<>());
+            model.put("orderItems", new ArrayList<>());
+            model.put("payments", new ArrayList<>());
+            model.put("shipments", new ArrayList<>());
+
+            ctx.render("templates/dashboard.html", model);
+        });
         app.post("/categories", CategoryController::create);
         app.put("/categories/{id}", CategoryController::update);
         app.delete("/categories/{id}", CategoryController::deleteOne);
 
         // --- ORDER ROUTES ---
-        app.get("/orders", OrderController::getAll);
-        app.get("/orders/{id}", OrderController::getOne);
+        app.get("/orders", ctx -> {
+            String searchId = ctx.queryParam("searchId");
+            Map<String, Object> model = new HashMap<>();
+            
+            // 1. Handle the Search Logic for Orders
+            List<Order> orderResult = new ArrayList<>();
+            if (searchId != null && !searchId.isEmpty()) {
+                try {
+                    Order o = bm.getOrderById(Integer.parseInt(searchId));
+                    if (o != null) orderResult.add(o);
+                } catch (NumberFormatException e) {
+                    // Return empty list if input is not a valid number
+                }
+            } else {
+                orderResult = bm.getAllOrders();
+            }
+            model.put("orders", orderResult);
+
+            // 2. STUB data to prevent Thymeleaf errors in dashboard.html
+            model.put("customers", new ArrayList<>());
+            model.put("products", new ArrayList<>());
+            model.put("orderItems", new ArrayList<>());
+            model.put("categories", new ArrayList<>());
+            model.put("payments", new ArrayList<>());
+            model.put("shipments", new ArrayList<>());
+
+            ctx.render("templates/dashboard.html", model);
+        });
         app.post("/orders", OrderController::create);
         app.put("/orders/{id}", OrderController::update);
         app.delete("/orders/{id}", OrderController::deleteOne);
 
         // --- ORDER ITEM ROUTES ---
-        app.get("/orderitems", OrderItemController::getAll);
-        app.get("/orderitems/{id}", OrderItemController::getOne);
+        app.get("/orderitems", ctx -> {
+            String searchId = ctx.queryParam("searchId");
+            Map<String, Object> model = new HashMap<>();
+            
+            // 1. Handle the Search Logic for Order Items
+            List<OrderItem> orderItemResult = new ArrayList<>();
+            if (searchId != null && !searchId.isEmpty()) {
+                try {
+                    OrderItem item = bm.getOrderItemById(Integer.parseInt(searchId));
+                    if (item != null) orderItemResult.add(item);
+                } catch (NumberFormatException e) {
+                    // Non-numeric input results in an empty list
+                }
+            } else {
+                orderItemResult = bm.getAllOrderItems();
+            }
+            model.put("orderItems", orderItemResult);
+
+            // 2. STUB data for other tables required by dashboard.html
+            model.put("customers", new ArrayList<>());
+            model.put("products", new ArrayList<>());
+            model.put("orders", new ArrayList<>());
+            model.put("categories", new ArrayList<>());
+            model.put("payments", new ArrayList<>());
+            model.put("shipments", new ArrayList<>());
+
+            ctx.render("templates/dashboard.html", model);
+        });
         app.post("/orderitems", OrderItemController::create);
         app.put("/orderitems/{id}", OrderItemController::update);
         app.delete("/orderitems/{id}", OrderItemController::deleteOne);
 
         // --- PAYMENT ROUTES ---
-        app.get("/payments", PaymentController::getAll);
-        app.get("/payments/{id}", PaymentController::getOne);
+        app.get("/payments", ctx -> {
+            String searchId = ctx.queryParam("searchId");
+            Map<String, Object> model = new HashMap<>();
+            
+            // 1. Handle the Search Logic for Payments
+            List<Payment> paymentResult = new ArrayList<>();
+            if (searchId != null && !searchId.isEmpty()) {
+                try {
+                    Payment pay = bm.getPaymentById(Integer.parseInt(searchId));
+                    if (pay != null) paymentResult.add(pay);
+                } catch (NumberFormatException e) {
+                    // Non-numeric input results in an empty list
+                }
+            } else {
+                paymentResult = bm.getAllPayments();
+            }
+            model.put("payments", paymentResult);
+
+            // 2. STUB data for other tables required by dashboard.html
+            model.put("customers", new ArrayList<>());
+            model.put("products", new ArrayList<>());
+            model.put("orders", new ArrayList<>());
+            model.put("orderItems", new ArrayList<>());
+            model.put("categories", new ArrayList<>());
+            model.put("shipments", new ArrayList<>());
+
+            ctx.render("templates/dashboard.html", model);
+        });
         app.post("/payments", PaymentController::create);
         app.put("/payments/{id}", PaymentController::update);
         app.delete("/payments/{id}", PaymentController::deleteOne);
 
         // --- SHIPMENT ROUTES ---
-        app.get("/shipments", ShipmentController::getAll);
-        app.get("/shipments/{id}", ShipmentController::getOne);
+        app.get("/shipments", ctx -> {
+            String searchId = ctx.queryParam("searchId");
+            Map<String, Object> model = new HashMap<>();
+            
+            // 1. Handle the Search Logic for Shipments
+            List<Shipment> shipmentResult = new ArrayList<>();
+            if (searchId != null && !searchId.isEmpty()) {
+                try {
+                    Shipment s = bm.getShipmentById(Integer.parseInt(searchId));
+                    if (s != null) shipmentResult.add(s);
+                } catch (NumberFormatException e) {
+                    // Non-numeric input results in an empty list
+                }
+            } else {
+                shipmentResult = bm.getAllShipments();
+            }
+            model.put("shipments", shipmentResult);
+
+            // 2. STUB data for other tables to satisfy dashboard.html requirements
+            model.put("customers", new ArrayList<>());
+            model.put("products", new ArrayList<>());
+            model.put("orders", new ArrayList<>());
+            model.put("orderItems", new ArrayList<>());
+            model.put("categories", new ArrayList<>());
+            model.put("payments", new ArrayList<>());
+
+            ctx.render("templates/dashboard.html", model);
+        });
         app.post("/shipments", ShipmentController::create);
         app.put("/shipments/{id}", ShipmentController::update);
         app.delete("/shipments/{id}", ShipmentController::deleteOne);
