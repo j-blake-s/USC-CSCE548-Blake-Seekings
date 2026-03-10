@@ -1,6 +1,7 @@
 <h2 class="text-2xl font-bold mb-4 text-gray-800" 
     th:text="${p.productId != 0} ? 'Edit Product' : 'Add Product'"></h2>
-<form th:attr="hx-put=${p.productId != 0} ? '/products/' + ${p.productId} : '/products'" 
+<form th:attr="hx-put=${p.productId != 0} ? '/products/' + ${p.productId} : '',
+              hx-post=${p.productId == 0} ? '/products' : ''" 
       hx-ext="json-enc" class="space-y-4">
 
     <div>

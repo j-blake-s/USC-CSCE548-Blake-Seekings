@@ -10,7 +10,7 @@ import java.util.List;
 public class PaymentDAO {
     // CREATE
     public Payment create(Payment p) throws SQLException {
-        String sql = "INSERT INTO Payments (order_id, payment_date, amount, payment_method) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO Payments (order_id, payment_date, amount, payment_method) VALUES (?, ?, ?, ?)";
         try (Connection conn = DatabaseUtil.getConnection(); 
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, p.getOrderId());
@@ -22,7 +22,7 @@ public class PaymentDAO {
             if (keys.next()) {
                 p.setPaymentId(keys.getInt(1));
             }
-            
+
             return p;
         }
     }
